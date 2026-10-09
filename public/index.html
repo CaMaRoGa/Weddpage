@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="description" content="María y Carlos — 18.09.2027">
+  <title>María y Carlos · 18.09.2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand-mini" href="#inicio" aria-label="Inicio">
+      <img src="./assets/ambigram.png" alt="M y C">
+    </a>
+
+    <nav class="desktop-nav" aria-label="Navegación principal">
+      <a href="#inicio">INICIO</a>
+      <a href="#boda">LA BODA</a>
+      <a href="#confirmacion">CONFIRMACIÓN</a>
+      <span class="nav-spacer"></span>
+      <a href="#detalles">DETALLES</a>
+      <a href="#contacto">CONTACTO</a>
+    </nav>
+
+    <button class="mobile-menu-button" id="menuButton" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="Menú móvil">
+      <a href="#inicio">INICIO</a>
+      <a href="#boda">LA BODA</a>
+      <a href="#confirmacion">CONFIRMACIÓN</a>
+      <a href="#detalles">DETALLES</a>
+      <a href="#contacto">CONTACTO</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <img class="hero-logo" src="./assets/ambigram.png" alt="" aria-hidden="true">
+      <h1>María y Carlos</h1>
+      <div class="date">18 . 09 . 2027</div>
+      <div class="ornament-line"></div>
+      <p class="hero-title">¡Nos casamos!</p>
+      <p class="intro">
+        Nos hace mucha ilusión compartir este día tan especial con vosotros.<br>
+        Por favor, confirma tu asistencia antes del 30 de junio de 2027.
+      </p>
+      <img class="leaf" src="./assets/leaf.svg" alt="" aria-hidden="true">
+    </section>
+
+    <section class="content-section" id="confirmacion">
+      <form id="rsvpForm" class="rsvp-card" novalidate>
+        <div class="form-column">
+          <div class="question">
+            <label>1. ¿Nos acompañas?</label>
+            <div class="choice-row">
+              <label class="choice active">
+                <input type="radio" name="attending" value="yes" checked>
+                <span class="radio"></span> Sí
+              </label>
+              <label class="choice">
+                <input type="radio" name="attending" value="no">
+                <span class="radio"></span> No
+              </label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label for="name">2. Nombre y apellidos</label>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Escribe tu nombre completo" required>
+          </div>
+
+          <div class="question">
+            <label for="guests">3. Número de acompañantes</label>
+            <select id="guests" name="guests">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label for="allergies">4. Alergias o intolerancias</label>
+            <textarea id="allergies" name="allergies" rows="4" placeholder="Indica cualquier alergia o intolerancia alimentaria..."></textarea>
+            <label class="checkline">
+              <input id="noneAllergies" type="checkbox">
+              <span class="box"></span> Ninguna
+            </label>
+          </div>
+        </div>
+
+        <div class="form-column form-column-right">
+          <div class="question">
+            <label>5. ¿Usarás el autocar?</label>
+            <div class="choice-row">
+              <label class="choice active">
+                <input type="radio" name="bus" value="yes" checked>
+                <span class="radio"></span> Sí
+              </label>
+              <label class="choice">
+                <input type="radio" name="bus" value="no">
+                <span class="radio"></span> No
+              </label>
+            </div>
+          </div>
+
+          <div class="question songs-question">
+            <label for="songSearch">6. ¿Qué canciones te gustaría escuchar?</label>
+
+            <div class="song-search">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input id="songSearch" type="search" placeholder="Buscar canción o artista..." autocomplete="off">
+              <button type="button" id="clearSearch" class="clear-search" aria-label="Borrar búsqueda">×</button>
+            </div>
+
+            <div class="search-heading">Resultados de búsqueda</div>
+            <div id="songResults" class="song-results">
+              <div class="empty-search">Empieza a escribir para buscar una canción.</div>
+            </div>
+
+            <div class="selected-heading">
+              <span>Canciones seleccionadas (<span id="selectedCount">0</span>)</span>
+              <button type="button" id="clearSongs">Limpiar todo</button>
+            </div>
+
+            <div id="selectedSongs" class="selected-songs">
+              <div class="empty-selected">Todavía no has seleccionado ninguna.</div>
+            </div>
+          </div>
+
+          <button class="submit-button" type="submit">
+            <span>ENVIAR CONFIRMACIÓN</span>
+            <span>→</span>
+          </button>
+        </div>
+
+        <div class="privacy-note">
+          <span aria-hidden="true">♙</span>
+          Tus datos se tratarán con la máxima confidencialidad y solo se utilizarán para la gestión de la boda.
+        </div>
+      </form>
+    </section>
+
+    <section class="simple-section" id="boda">
+      <span class="section-kicker">18 · 09 · 2027</span>
+      <h2>Un día para recordar</h2>
+      <p>Muy pronto compartiremos aquí todos los detalles de la celebración.</p>
+    </section>
+
+    <section class="simple-section" id="detalles">
+      <span class="section-kicker">DETALLES</span>
+      <h2>Próximamente</h2>
+      <p>Horario, lugar, transporte y toda la información que necesitaréis para acompañarnos.</p>
+    </section>
+
+    <section class="simple-section" id="contacto">
+      <span class="section-kicker">CONTACTO</span>
+      <h2>¿Tienes alguna pregunta?</h2>
+      <p>Puedes añadir aquí el teléfono, correo electrónico o WhatsApp de contacto.</p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog class="success-dialog" id="successDialog">
+    <div class="success-inner">
+      <img src="./assets/ambigram.png" alt="" class="success-logo">
+      <h2>¡Gracias!</h2>
+      <p>Hemos recibido tu confirmación.</p>
+      <button type="button" id="closeDialog" class="submit-button">CERRAR</button>
+    </div>
+  </dialog>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
