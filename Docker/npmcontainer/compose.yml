@@ -6,6 +6,6 @@ services:
       dockerfile: Docker/npmcontainer/Dockerfile
     container_name: server_container
     volumes:
-      - ./data/rsvps.json:/app/data/rsvps.json
+      - ../../data/rsvps.json:/app/data/rsvps.json
     ports:
       - "3000:3000"
