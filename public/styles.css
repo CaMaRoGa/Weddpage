@@ -611,48 +611,19 @@ textarea:focus,
 #contacto .contact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 20px;
-  max-width: 900px;
+  gap: 12px;
+  max-width: 780px;
   margin: 20px auto 0;
-}
-
-#contacto {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(242,213,165,.55);
-  border-radius: 22px;
-  background:
-    radial-gradient(ellipse at 50% 0, rgba(232,189,196,.2), transparent 55%),
-    linear-gradient(145deg, rgba(77,32,42,.58), rgba(61,24,33,.4));
-  box-shadow: 0 22px 55px rgba(30,10,16,.16);
-}
-
-#contacto::before,
-#contacto::after {
-  content: "✿";
-  position: absolute;
-  color: rgba(242,213,165,.48);
-  font-size: 30px;
-  pointer-events: none;
-}
-
-#contacto::before {
-  top: 16px;
-  left: 18px;
-  transform: rotate(-18deg);
-}
-
-#contacto::after {
-  right: 18px;
-  bottom: 14px;
-  transform: rotate(18deg);
 }
 
 #contacto .contact-card {
   position: relative;
   overflow: hidden;
-  min-height: 190px;
-  padding: 22px 18px 24px;
+  width: 100%;
+  max-width: 250px;
+  justify-self: center;
+  min-height: 120px;
+  padding: 11px 8px 13px;
   border: 1px solid rgba(242,213,165,.8);
   border-radius: 14px;
   background:
@@ -668,10 +639,11 @@ textarea:focus,
 }
 
 #contacto .contact-icon {
-  display: block;
-  width: 16px;
-  height: 16px;
-  margin: 0 auto 5px;
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin: 0 6px 0 0;
+  vertical-align: middle;
   fill: none;
   stroke: #793944;
   stroke-width: 1.2;
@@ -685,6 +657,7 @@ textarea:focus,
 }
 
 #contacto .contact-label {
+  vertical-align: middle;
   color: #793944;
   font: 600 11px var(--sans);
   letter-spacing: .14em;
@@ -692,17 +665,17 @@ textarea:focus,
 }
 
 #contacto .contact-card p {
-  margin: 10px 0 0;
+  margin: 7px 0 0;
   color: #4d202a;
-  font-size: clamp(20px, 2.4vw, 26px);
+  font-size: clamp(18px, 2.1vw, 22px);
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
 
 #contacto .contact-card:last-child p {
-  display: inline;
-  margin-left: 5px;
-  font-size: clamp(12px, 1.5vw, 15px);
+  display: block;
+  margin: 10px 0 0;
+  font-size: clamp(13px, 1.7vw, 17px);
   white-space: nowrap;
   overflow-wrap: normal;
 }
@@ -894,7 +867,8 @@ textarea:focus,
 
 .wedding-schedule {
   position: relative;
-  width: min(660px, 100%);
+  width: fit-content;
+  max-width: 100%;
   margin: 34px auto 0;
   padding: 0;
   list-style: none;
@@ -914,7 +888,7 @@ textarea:focus,
 .wedding-schedule li {
   position: relative;
   display: grid;
-  grid-template-columns: 52px 90px 1fr;
+  grid-template-columns: 52px 88px max-content;
   gap: 18px;
   padding: 16px 0 16px 22px;
 }
@@ -952,8 +926,7 @@ textarea:focus,
   filter: drop-shadow(0 2px 3px rgba(0,0,0,.2));
 }
 
-.wedding-schedule li > span,
-.schedule-location {
+.wedding-schedule li > span {
   font-family: var(--serif);
   font-size: 22px;
   line-height: 1.4;
@@ -963,21 +936,112 @@ textarea:focus,
   color: #fff8f5;
 }
 
-.schedule-location {
-  color: #ffffff;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.schedule-location:focus-visible {
-  outline: 2px solid #f2d5a5;
-  outline-offset: 4px;
-}
-
 .wedding-schedule .wedding-celebration {
   color: #ffffff;
   font-weight: 700;
+}
+
+.details-ornament {
+  display: block;
+  width: min(145px, 40vw);
+  height: auto;
+  margin: 8px auto 14px;
+  filter: drop-shadow(0 3px 4px rgba(30,10,16,.22));
+}
+
+.schedule-venues {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  width: min(820px, 100%);
+  margin: 28px auto 0;
+}
+
+.schedule-venues::before {
+  content: "";
+  position: absolute;
+  top: 42px;
+  left: 26%;
+  right: 26%;
+  border-top: 1px dashed rgba(242,213,165,.72);
+}
+
+.schedule-venue {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 190px;
+  gap: 10px;
+  padding: 16px 20px;
+  border: 1px solid rgba(242,213,165,.8);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fff8f5, #f3e3df);
+  box-shadow: 0 12px 26px rgba(30,10,16,.18), inset 0 0 0 4px rgba(255,255,255,.35);
+  color: #4d202a;
+  text-align: center;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.schedule-venue:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(30,10,16,.23), inset 0 0 0 4px rgba(255,255,255,.35);
+}
+
+.venue-pin {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid #f2d5a5;
+  border-radius: 50%;
+  background: #793944;
+}
+
+.venue-pin svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: #f2d5a5;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.venue-events {
+  color: #793944;
+  font: 600 10px var(--sans);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.schedule-venue strong {
+  color: #4d202a;
+  font: 500 23px/1.1 var(--serif);
+}
+
+.venue-action {
+  margin-top: auto;
+  padding-top: 6px;
+  color: #793944;
+  font: 600 10px var(--sans);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.schedule-venue:hover .venue-action,
+.schedule-venue:focus-visible .venue-action {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.schedule-venue:focus-visible {
+  outline: 2px solid #f2d5a5;
+  outline-offset: 3px;
 }
 
 .mobile-menu-button,
@@ -1185,12 +1249,46 @@ textarea:focus,
 
   .simple-section h2 { font-size: 38px; }
 
+  .schedule-venues {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 460px;
+  }
+
+  .schedule-venues::before {
+    top: 42px;
+    bottom: 42px;
+    left: 34px;
+    right: auto;
+    border-top: 0;
+    border-left: 1px dashed rgba(242,213,165,.72);
+  }
+
+  .schedule-venue {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    grid-template-areas:
+      "pin events"
+      "pin name"
+      "pin action";
+    justify-content: initial;
+    min-height: 104px;
+    gap: 4px 12px;
+    padding: 12px;
+    text-align: left;
+  }
+
+  .venue-pin { grid-area: pin; }
+  .venue-events { grid-area: events; }
+  .schedule-venue strong { grid-area: name; }
+  .venue-action { grid-area: action; margin-top: 0; padding-top: 2px; }
+
   .wedding-schedule {
     margin-top: 26px;
   }
 
   .wedding-schedule li {
-    grid-template-columns: 44px 58px 1fr;
+    grid-template-columns: 44px 58px max-content;
     gap: 12px;
   }
 
@@ -1213,13 +1311,12 @@ textarea:focus,
     height: 42px;
   }
 
-  .wedding-schedule time {
-    font-size: 16px;
-  }
+  .wedding-schedule time { font-size: 16px; }
 
-  .wedding-schedule li > span,
-  .wedding-schedule .schedule-location {
-    font-size: 19px;
+  .wedding-schedule li > span { font-size: 19px; }
+
+  .details-ornament {
+    width: min(125px, 38vw);
   }
 }
 

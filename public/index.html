@@ -18,9 +18,9 @@
     <nav class="desktop-nav" aria-label="Navegación principal">
       <a href="#inicio">INICIO</a>
       <a href="#boda">LA BODA</a>
+      <a href="#detalles">DETALLES</a>
       <a href="#alojamiento">ALOJAMIENTO</a>
       <a href="#confirmacion">CONFIRMACIÓN</a>
-      <a href="#detalles">DETALLES</a>
       <a href="#contacto">CONTACTO</a>
       <a href="#regalos">REGALOS</a>
     </nav>
@@ -32,9 +32,9 @@
     <nav class="mobile-nav" id="mobileNav" aria-label="Menú móvil">
       <a href="#inicio">INICIO</a>
       <a href="#boda">LA BODA</a>
+      <a href="#detalles">DETALLES</a>
       <a href="#alojamiento">ALOJAMIENTO</a>
       <a href="#confirmacion">CONFIRMACIÓN</a>
-      <a href="#detalles">DETALLES</a>
       <a href="#contacto">CONTACTO</a>
       <a href="#regalos">REGALOS</a>
     </nav>
@@ -57,6 +57,24 @@
     <section class="simple-section" id="boda">
       <span class="section-kicker">18 · 09 · 2027</span>
       <h2>Un día para recordar</h2>
+      <div class="schedule-venues" aria-label="Ubicaciones de la celebración">
+        <a class="schedule-venue" href="https://www.google.com/maps/search/?api=1&amp;query=Iglesia+Nuestra+Se%C3%B1ora+de+la+Asunci%C3%B3n+de+Meco" target="_blank" rel="noopener noreferrer">
+          <span class="venue-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </span>
+          <span class="venue-events">La ceremonia</span>
+          <strong>Iglesia Nuestra Señora de la Asunción de Meco</strong>
+          <span class="venue-action">Ver ubicación</span>
+        </a>
+        <a class="schedule-venue" href="https://www.google.com/maps/search/?api=1&amp;query=La+Vega+del+Henares+Meco" target="_blank" rel="noopener noreferrer">
+          <span class="venue-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </span>
+          <span class="venue-events">Cóctel · convite · fiesta</span>
+          <strong>La Vega del Henares</strong>
+          <span class="venue-action">Ver ubicación</span>
+        </a>
+      </div>
       <ol class="wedding-schedule">
         <li>
           <span class="schedule-icon" aria-hidden="true">
@@ -70,7 +88,20 @@
             </svg>
           </span>
           <time datetime="12:30">12:30</time>
-          <a class="schedule-location" href="https://www.google.com/maps/search/?api=1&amp;query=Iglesia+Nuestra+Se%C3%B1ora+de+la+Asunci%C3%B3n+de+Meco" target="_blank" rel="noopener noreferrer">Ceremonia · Iglesia Nuestra Señora de la Asunción de Meco</a>
+          <span class="wedding-celebration">Ceremonia</span>
+        </li>
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M17 11h30L32 31v18m-9 0h18m-22 5h26"/>
+              <path d="M32 30v5m4-24 13-7m-17 7-5-7"/>
+              <path d="M20 16h24"/>
+              <circle cx="25" cy="21" r="1.5" fill="#E8BDC4" stroke="#E8BDC4"/>
+              <circle cx="39" cy="24" r="1.5" fill="#E8BDC4" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="14:00">14:00</time>
+          <span class="wedding-celebration">Cóctel</span>
         </li>
         <li>
           <span class="schedule-icon" aria-hidden="true">
@@ -85,8 +116,8 @@
               <path d="M12 29h4m32 0h4" stroke="#E8BDC4"/>
             </svg>
           </span>
-          <time datetime="14:00">14:00</time>
-          <a class="schedule-location" href="https://www.google.com/maps/search/?api=1&amp;query=La+Vega+del+Henares+Meco" target="_blank" rel="noopener noreferrer">Convite · La Vega del Henares</a>
+          <time datetime="15:30">15:30</time>
+          <span class="wedding-celebration">Convite</span>
         </li>
         <li>
           <span class="schedule-icon" aria-hidden="true">
@@ -101,6 +132,13 @@
           <span class="wedding-celebration">¡Fiesta!</span>
         </li>
       </ol>
+    </section>
+
+    <section class="simple-section" id="detalles">
+      <span class="section-kicker">DETALLES</span>
+      <h2>Próximamente</h2>
+      <img class="details-ornament" src="./assets/day-remember-ornament.png" alt="" aria-hidden="true">
+      <p>El horario del transporte, el lugar de celebración de la preboda y toda la información que necesitaréis para acompañarnos.</p>
     </section>
 
     <section class="simple-section" id="alojamiento">
@@ -313,12 +351,6 @@
       </form>
     </section>
 
-    <section class="simple-section" id="detalles">
-      <span class="section-kicker">DETALLES</span>
-      <h2>Próximamente</h2>
-      <p>El horario del transporte, el lugar de celebración de la preboda y toda la información que necesitaréis para acompañarnos.</p>
-    </section>
-
     <section class="simple-section" id="contacto">
       <span class="section-kicker">CONTACTO</span>
       <h2>¿Tienes alguna pregunta?</h2>
@@ -361,7 +393,7 @@
       <img class="gift-ornament" src="./assets/gift-driving.svg" alt="" aria-hidden="true">
       <div class="gift-card">
         <p class="gift-intro">Si queréis hacernos un regalo, aquí va una idea:</p>
-        <h3>Operación: carnet para María</h3>
+        <h3>Operación: Carnet para María</h3>
         <p class="gift-copy">María aún no tiene carnet. Vuestros regalos irán a sus clases, prácticas y examen. ¡Los conos de la autoescuela ya están avisados!</p>
         <div class="gift-account">
           <span>Cuenta provisional del fondo «Rumbo a la autoescuela»</span>
