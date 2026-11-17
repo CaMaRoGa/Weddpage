@@ -2,6 +2,7 @@
   --paper: #f8f7f3;
   --paper-2: #fcfbf8;
   --panel-wine: #793944;
+  --panel-deep: #4d202a;
   --ink: #101316;
   --muted: #6e7478;
   --line: #deddd7;
@@ -22,8 +23,8 @@ body {
   margin: 0;
   color: #fff8f5;
   background:
-    radial-gradient(circle at 20% 10%, rgba(130,61,75,.35), transparent 35%),
-    #5a1f2b;
+    radial-gradient(circle at 20% 10%, rgba(173,112,122,.24), transparent 35%),
+    var(--panel-wine);
   font-family: var(--serif);
 }
 
@@ -66,13 +67,16 @@ body::before {
 .brand-mini img {
   width: 68px;
   height: 82px;
+  filter: invert(1) sepia(1) saturate(1.5) hue-rotate(350deg);
+  mix-blend-mode: screen;
 }
 
 .desktop-nav {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 36px;
+  justify-content: space-between;
+  gap: 0;
 }
 
 .desktop-nav a,
@@ -87,36 +91,36 @@ body::before {
 .desktop-nav a:hover,
 .mobile-nav a:hover { opacity: .55; }
 
-.nav-spacer { flex: 1; }
-
 .hero {
   width: min(1100px, calc(100% - 42px));
   margin: 0 auto;
-  padding: 12px 40px 26px;
+  padding: 24px 40px 50px;
   text-align: center;
-  background: var(--panel-wine);
-  box-shadow: var(--shadow);
-  border-radius: 0 0 9px 9px;
+  background: transparent;
 }
 
 .hero-logo {
-  width: 88px;
-  height: 104px;
-  object-fit: contain;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  object-position: center;
   margin-top: 0;
+  filter: invert(1) sepia(1) saturate(1.5) hue-rotate(350deg);
+  mix-blend-mode: screen;
 }
 
 .hero h1 {
-  margin: -2px 0 2px;
+  margin: 0 0 4px;
   font-weight: 500;
-  font-size: clamp(42px, 5vw, 50px);
+  font-size: clamp(54px, 7vw, 72px);
   line-height: 1;
   letter-spacing: .01em;
 }
 
 .date {
   font-family: var(--sans);
-  font-size: 15px;
+  color: #fff8f5;
+  font-size: 18px;
   letter-spacing: .26em;
   margin: 13px 0 18px;
 }
@@ -124,26 +128,29 @@ body::before {
 .ornament-line {
   width: 42px;
   height: 1px;
-  background: #9ca0a0;
+  background: #f2d5a5;
   margin: 0 auto 18px;
 }
 
 .hero-title {
-  font-size: clamp(32px, 4vw, 42px);
+  color: #f2d5a5;
+  font-size: clamp(42px, 5vw, 54px);
   font-style: italic;
   margin: 0 0 16px;
 }
 
 .intro {
-  font-size: 17px;
+  color: #f2d5a5;
+  font-size: 20px;
   line-height: 1.55;
   margin: 0;
 }
 
-.leaf {
-  width: 31px;
-  margin: 13px auto 0;
-  opacity: .95;
+.hero-ornament {
+  display: block;
+  width: min(620px, 92%);
+  height: auto;
+  margin: 22px auto 0;
 }
 
 .content-section {
@@ -161,7 +168,8 @@ body::before {
 
 .confirmation-heading h2 {
   margin: 12px 0;
-  font-size: clamp(34px, 4vw, 40px);
+  color: #f2d5a5;
+  font-size: clamp(40px, 5vw, 48px);
   font-weight: 500;
 }
 
@@ -180,7 +188,7 @@ body::before {
   display: block;
   border: 1px solid rgba(255,248,245,.3);
   border-radius: 8px;
-  background: var(--panel-wine);
+  background: var(--panel-deep);
   padding: 23px 26px 22px;
 }
 
@@ -300,7 +308,7 @@ body::before {
 
 .choice.active {
   border-color: #d5aeb5;
-  background: #4c202a;
+  background: var(--panel-wine);
   color: #fff8f5;
 }
 
@@ -575,20 +583,401 @@ textarea:focus,
 }
 
 .section-kicker {
-  font: 10px var(--sans);
+  font: 600 12px var(--sans);
   letter-spacing: .18em;
-  color: #e2bdc3;
+  color: #f2d5a5;
 }
 
 .simple-section h2 {
-  font-size: 40px;
+  color: #f2d5a5;
+  font-size: 48px;
   font-weight: 500;
   margin: 12px 0;
 }
 
 .simple-section p {
-  font-size: 17px;
-  color: #f0dfe1;
+  font-size: 20px;
+  color: #fff8f5;
+}
+
+.contact-ornament {
+  display: block;
+  width: min(300px, 80%);
+  height: auto;
+  margin: 8px auto 18px;
+  filter: drop-shadow(0 5px 10px rgba(30,10,16,.18));
+}
+
+#contacto .contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 20px auto 0;
+}
+
+#contacto {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(242,213,165,.55);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 0, rgba(232,189,196,.2), transparent 55%),
+    linear-gradient(145deg, rgba(77,32,42,.58), rgba(61,24,33,.4));
+  box-shadow: 0 22px 55px rgba(30,10,16,.16);
+}
+
+#contacto::before,
+#contacto::after {
+  content: "✿";
+  position: absolute;
+  color: rgba(242,213,165,.48);
+  font-size: 30px;
+  pointer-events: none;
+}
+
+#contacto::before {
+  top: 16px;
+  left: 18px;
+  transform: rotate(-18deg);
+}
+
+#contacto::after {
+  right: 18px;
+  bottom: 14px;
+  transform: rotate(18deg);
+}
+
+#contacto .contact-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 190px;
+  padding: 22px 18px 24px;
+  border: 1px solid rgba(242,213,165,.8);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(232,189,196,.38), transparent 42%),
+    linear-gradient(150deg, #fff8f5, #f3e3df);
+  box-shadow: 0 12px 28px rgba(31,9,16,.22), inset 0 0 0 4px rgba(255,255,255,.35);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+#contacto .contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 32px rgba(31,9,16,.26), inset 0 0 0 4px rgba(255,255,255,.35);
+}
+
+#contacto .contact-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 0 auto 5px;
+  fill: none;
+  stroke: #793944;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .4;
+}
+
+#contacto .contact-card:last-child .contact-icon {
+  stroke: #793944;
+}
+
+#contacto .contact-label {
+  color: #793944;
+  font: 600 11px var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+#contacto .contact-card p {
+  margin: 10px 0 0;
+  color: #4d202a;
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+#contacto .contact-card:last-child p {
+  display: inline;
+  margin-left: 5px;
+  font-size: clamp(12px, 1.5vw, 15px);
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #contacto .contact-card { transition: none; }
+  #contacto .contact-card:hover { transform: none; }
+}
+
+.gift-section {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(242,213,165,.55);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 0, rgba(232,189,196,.2), transparent 55%),
+    linear-gradient(145deg, rgba(77,32,42,.65), rgba(61,24,33,.48));
+  box-shadow: 0 22px 55px rgba(30,10,16,.16);
+}
+
+.gift-ornament {
+  display: block;
+  width: min(390px, 85%);
+  height: auto;
+  margin: 8px auto 16px;
+}
+
+.gift-card {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 38px);
+  border: 1px solid rgba(242,213,165,.9);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(232,189,196,.35), transparent 42%),
+    linear-gradient(145deg, #fff8f5, #f3e3df);
+  box-shadow: 0 14px 34px rgba(31,9,16,.22), inset 0 0 0 5px rgba(255,255,255,.35);
+  color: #4d202a;
+}
+
+.gift-card p {
+  color: #4d202a;
+}
+
+.gift-intro {
+  margin: 0;
+  font-size: 19px !important;
+}
+
+.gift-card h3 {
+  margin: 8px 0 12px;
+  color: #793944;
+  font-size: clamp(30px, 4vw, 38px);
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.gift-copy,
+.gift-aside {
+  max-width: 620px;
+  margin: 0 auto 13px;
+  font-size: 19px !important;
+  line-height: 1.5;
+}
+
+.gift-account {
+  display: grid;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 22px auto 0;
+  padding: 14px 22px;
+  border: 1px dashed rgba(121,57,68,.55);
+  border-radius: 12px;
+  background: rgba(255,255,255,.5);
+}
+
+.gift-account span {
+  color: #793944;
+  font: 600 10px var(--sans);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.gift-account strong {
+  color: #4d202a;
+  font: 600 clamp(17px, 3vw, 22px) var(--sans);
+  letter-spacing: .09em;
+  overflow-wrap: anywhere;
+}
+
+
+
+.accommodation-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  max-width: 1000px;
+  margin: 30px auto 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.accommodation-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(242,213,165,.35);
+  border-radius: 8px;
+  background: var(--panel-deep);
+}
+
+.accommodation-image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #e8cfd0;
+}
+
+.accommodation-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.accommodation-image > span {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 5px 9px;
+  border-radius: 20px;
+  color: #fff8f5;
+  background: rgba(77,32,42,.88);
+  font: 500 10px var(--sans);
+  letter-spacing: .04em;
+}
+
+.accommodation-card-content {
+  padding: 18px;
+}
+
+.accommodation-card h3 {
+  margin: 0 0 14px;
+  color: #fff8f5;
+  font: 500 25px/1.15 var(--serif);
+}
+
+.accommodation-card-content a,
+.accommodation-map > a {
+  color: #f2d5a5;
+  font: 600 11px var(--sans);
+  letter-spacing: .06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.accommodation-card-content a:hover,
+.accommodation-card-content a:focus-visible,
+.accommodation-map > a:hover,
+.accommodation-map > a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.accommodation-map {
+  max-width: 1000px;
+  margin: 48px auto 0;
+}
+
+.accommodation-map h3 {
+  margin: 0 0 18px;
+  color: #f2d5a5;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.accommodation-map iframe {
+  width: 100%;
+  height: clamp(320px, 55vw, 520px);
+  border: 1px solid rgba(242,213,165,.55);
+  border-radius: 8px;
+}
+
+.accommodation-map > a {
+  display: inline-block;
+  margin-top: 14px;
+}
+
+.wedding-schedule {
+  position: relative;
+  width: min(660px, 100%);
+  margin: 34px auto 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.wedding-schedule::before {
+  content: "";
+  position: absolute;
+  top: 42px;
+  bottom: 42px;
+  left: 8px;
+  width: 1px;
+  background: rgba(242,213,165,.6);
+}
+
+.wedding-schedule li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px 90px 1fr;
+  gap: 18px;
+  padding: 16px 0 16px 22px;
+}
+
+.wedding-schedule li::before {
+  content: "";
+  position: absolute;
+  top: 38px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f2d5a5;
+}
+
+.wedding-schedule time {
+  color: #f2d5a5;
+  font: 600 19px var(--sans);
+}
+
+.schedule-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+}
+
+.schedule-icon svg {
+  width: 50px;
+  height: 50px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: #f2d5a5;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.2));
+}
+
+.wedding-schedule li > span,
+.schedule-location {
+  font-family: var(--serif);
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.wedding-schedule li > span {
+  color: #fff8f5;
+}
+
+.schedule-location {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.schedule-location:focus-visible {
+  outline: 2px solid #f2d5a5;
+  outline-offset: 4px;
+}
+
+.wedding-schedule .wedding-celebration {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .mobile-menu-button,
@@ -736,20 +1125,25 @@ textarea:focus,
   .hero {
     width: 100%;
     border-radius: 0;
-    padding: 9px 20px 26px;
+    padding: 16px 20px 40px;
   }
 
   .hero-logo {
-    width: 68px;
-    height: 82px;
+    width: 170px;
+    height: 170px;
   }
 
-  .hero h1 { font-size: 38px; }
+  .hero h1 { font-size: 46px; }
 
-  .date { font-size: 12px; }
+  .date { font-size: 14px; }
 
   .intro {
-    font-size: 15px;
+    font-size: 17px;
+  }
+
+  .hero-ornament {
+    width: min(520px, 96%);
+    margin-top: 18px;
   }
 
   .content-section {
@@ -789,7 +1183,44 @@ textarea:focus,
     padding: 45px 10px;
   }
 
-  .simple-section h2 { font-size: 34px; }
+  .simple-section h2 { font-size: 38px; }
+
+  .wedding-schedule {
+    margin-top: 26px;
+  }
+
+  .wedding-schedule li {
+    grid-template-columns: 44px 58px 1fr;
+    gap: 12px;
+  }
+
+  .wedding-schedule::before {
+    top: 38px;
+    bottom: 38px;
+  }
+
+  .wedding-schedule li::before {
+    top: 34px;
+  }
+
+  .schedule-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .schedule-icon svg {
+    width: 42px;
+    height: 42px;
+  }
+
+  .wedding-schedule time {
+    font-size: 16px;
+  }
+
+  .wedding-schedule li > span,
+  .wedding-schedule .schedule-location {
+    font-size: 19px;
+  }
 }
 
 @media (max-width: 390px) {

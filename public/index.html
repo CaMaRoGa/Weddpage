@@ -18,10 +18,11 @@
     <nav class="desktop-nav" aria-label="Navegación principal">
       <a href="#inicio">INICIO</a>
       <a href="#boda">LA BODA</a>
+      <a href="#alojamiento">ALOJAMIENTO</a>
       <a href="#confirmacion">CONFIRMACIÓN</a>
-      <span class="nav-spacer"></span>
       <a href="#detalles">DETALLES</a>
       <a href="#contacto">CONTACTO</a>
+      <a href="#regalos">REGALOS</a>
     </nav>
 
     <button class="mobile-menu-button" id="menuButton" aria-label="Abrir menú" aria-expanded="false">
@@ -31,9 +32,11 @@
     <nav class="mobile-nav" id="mobileNav" aria-label="Menú móvil">
       <a href="#inicio">INICIO</a>
       <a href="#boda">LA BODA</a>
+      <a href="#alojamiento">ALOJAMIENTO</a>
       <a href="#confirmacion">CONFIRMACIÓN</a>
       <a href="#detalles">DETALLES</a>
       <a href="#contacto">CONTACTO</a>
+      <a href="#regalos">REGALOS</a>
     </nav>
   </header>
 
@@ -48,13 +51,111 @@
         Nos hace mucha ilusión compartir este día tan especial con vosotros.<br>
         Por favor, confirma tu asistencia antes del 30 de junio de 2027.
       </p>
-      <img class="leaf" src="./assets/leaf.svg" alt="" aria-hidden="true">
+      <img class="hero-ornament" src="./assets/hero-ornament.svg" alt="" aria-hidden="true">
     </section>
 
     <section class="simple-section" id="boda">
       <span class="section-kicker">18 · 09 · 2027</span>
       <h2>Un día para recordar</h2>
-      <p>Muy pronto compartiremos aquí todos los detalles de la celebración.</p>
+      <ol class="wedding-schedule">
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M32 4v12m-5-8h10"/>
+              <path d="M10 56h44M15 29h34v27M11 29l21-12 21 12"/>
+              <path d="M25 56V43a7 7 0 0 1 14 0v13"/>
+              <circle cx="32" cy="33" r="3"/>
+              <path d="M8 60h48"/>
+              <path d="M20 35h5m14 0h5" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="12:30">12:30</time>
+          <a class="schedule-location" href="https://www.google.com/maps/search/?api=1&amp;query=Iglesia+Nuestra+Se%C3%B1ora+de+la+Asunci%C3%B3n+de+Meco" target="_blank" rel="noopener noreferrer">Ceremonia · Iglesia Nuestra Señora de la Asunción de Meco</a>
+        </li>
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M8 33h48l-4 8H12l-4-8Z"/>
+              <path d="M15 41 12 57m37-16 3 16M12 52h40"/>
+              <path d="M7 15v15m-3-15v5a3 3 0 0 0 6 0v-5M57 15v15m0-15-3 9h6"/>
+              <ellipse cx="32" cy="27" rx="11" ry="3.5"/>
+              <path d="M24 27c2-4 5-6 8-6s6 2 8 6m-12-1 3-3 3 3 3-2"/>
+              <circle cx="14" cy="29" r="5"/>
+              <circle cx="50" cy="29" r="5"/>
+              <path d="M12 29h4m32 0h4" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="14:00">14:00</time>
+          <a class="schedule-location" href="https://www.google.com/maps/search/?api=1&amp;query=La+Vega+del+Henares+Meco" target="_blank" rel="noopener noreferrer">Convite · La Vega del Henares</a>
+        </li>
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M24 13v29a7 7 0 1 1-4-6V20l25-6v28a7 7 0 1 1-4-6V9"/>
+              <circle cx="12" cy="44" r="2" fill="#E8BDC4" stroke="#E8BDC4"/>
+              <circle cx="53" cy="32" r="2" fill="#E8BDC4" stroke="#E8BDC4"/>
+              <path d="m32 4 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5L30.5 8 32 4Zm20 35 1.2 3.2 3.3 1.3-3.3 1.2-1.2 3.3-1.3-3.3-3.2-1.2 3.2-1.3L52 39Z" fill="#E8BDC4" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="17:00">17:00</time>
+          <span class="wedding-celebration">¡Fiesta!</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="simple-section" id="alojamiento">
+      <span class="section-kicker">ALOJAMIENTO</span>
+      <h2>Nuestras recomendaciones de alojamiento en Alcalá de Henares</h2>
+      <p>Algunas opciones de alojamiento en Alcalá de Henares:</p>
+      <ul class="accommodation-list">
+        <li>
+          <article class="accommodation-card">
+            <div class="accommodation-image">
+              <img src="./assets/hotel-placeholder.svg" alt="" aria-hidden="true">
+              <span>Imagen provisional</span>
+            </div>
+            <div class="accommodation-card-content">
+              <h3>Hotel Alcalá Plaza</h3>
+              <a href="https://www.google.es/maps/place/Hotel+Alcal%C3%A1+Plaza/@40.5002742,-3.3494097,15z/data=!4m13!1m2!2m1!1sHoteles!3m9!1s0xd424eabec9ddecd:0x5120d0053d11c6b0!5m2!4m1!1i2!8m2!3d40.5003075!4d-3.3353119!15sCgdIb3RlbGVzkgEFaG90ZWyqATwQASoLIgdob3RlbGVzKA4yHhABIhoBXoTJOxP2P7auU8Kq7sysydwx7Y0yaM5nlzILEAIiB2hvdGVsZXPgAQA!16s%2Fg%2F1wt3pqsq?entry=ttu&amp;g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="accommodation-card">
+            <div class="accommodation-image">
+              <img src="./assets/hotel-placeholder.svg" alt="" aria-hidden="true">
+              <span>Imagen provisional</span>
+            </div>
+            <div class="accommodation-card-content">
+              <h3>ibis budget Madrid Alcalá de Henares La Dehesa</h3>
+              <a href="https://www.google.es/maps/place/ibis+budget+Madrid+Alcala+de+Henares+La+Dehesa/@40.5002742,-3.3494097,15z/data=!3m1!5s0xd424eac82e9bca3:0xa3d4d09ad808fd50!4m13!1m2!2m1!1sHoteles!3m9!1s0xd424c03ffffff03:0x39e281a63cb71d45!5m2!4m1!1i2!8m2!3d40.5001309!4d-3.3368659!15sCgdIb3RlbGVzkgEFaG90ZWyqATwQASoLIgdob3RlbGVzKA4yHhABIhoBXoTJOxP2P7auU8Kq7sysydwx7Y0yaM5nlzILEAIiB2hvdGVsZXPgAQA!16s%2Fg%2F1v7tmpc2?entry=ttu&amp;g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="accommodation-card">
+            <div class="accommodation-image">
+              <img src="./assets/hotel-placeholder.svg" alt="" aria-hidden="true">
+              <span>Imagen provisional</span>
+            </div>
+            <div class="accommodation-card-content">
+              <h3>Parador de Alcalá de Henares</h3>
+              <a href="https://www.google.es/maps/place/Parador+de+Alcal%C3%A1+de+Henares/@40.4813525,-3.375399,15z/data=!4m13!1m2!2m1!1sHoteles!3m9!1s0xd4249145bff81fd:0x9425de981531411c!5m2!4m1!1i2!8m2!3d40.4813546!4d-3.361668!15sCgdIb3RlbGVzkgEFaG90ZWyqATwQASoLIgdob3RlbGVzKA4yHhABIhoBXoTJOxP2P7auU8Kq7sysydwx7Y0yaM5nlzILEAIiB2hvdGVsZXPgAQA!16s%2Fg%2F1tfvjhvr?entry=ttu&amp;g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+            </div>
+          </article>
+        </li>
+      </ul>
+      <div class="accommodation-map">
+        <h3>Mapa de alojamientos y lugares de celebración</h3>
+        <iframe
+          title="Lista compartida de Google Maps: Boda María y Carlos"
+          src="https://www.google.es/maps/@40.516529,-3.3854624,13z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3?output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+        <a href="https://maps.app.goo.gl/agEz5ctzvqSFbx9P8" target="_blank" rel="noopener noreferrer">Abrir la lista completa en Google Maps</a>
+      </div>
     </section>
 
     <section class="content-section" id="confirmacion">
@@ -215,13 +316,58 @@
     <section class="simple-section" id="detalles">
       <span class="section-kicker">DETALLES</span>
       <h2>Próximamente</h2>
-      <p>Horario, lugar, transporte y toda la información que necesitaréis para acompañarnos.</p>
+      <p>El horario del transporte, el lugar de celebración de la preboda y toda la información que necesitaréis para acompañarnos.</p>
     </section>
 
     <section class="simple-section" id="contacto">
       <span class="section-kicker">CONTACTO</span>
       <h2>¿Tienes alguna pregunta?</h2>
-      <p>Puedes añadir aquí el teléfono, correo electrónico o WhatsApp de contacto.</p>
+      <img class="contact-ornament" src="./assets/contact-ornament.svg" alt="" aria-hidden="true">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <svg class="contact-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M16 8 10 11c-2 1-2 4-1 7 3 10 11 18 21 21 3 1 6 1 7-1l3-6-9-6-4 5c-5-2-9-6-11-11l5-4-5-8Z"/>
+            <path d="M29 9a11 11 0 0 1 10 10M29 14a6 6 0 0 1 5 5"/>
+            <path d="m13 34-3 3m25-4 3 3"/>
+          </svg>
+          <span class="contact-label">María</span>
+          <p>615 974 990</p>
+        </div>
+        <div class="contact-card">
+          <svg class="contact-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M16 8 10 11c-2 1-2 4-1 7 3 10 11 18 21 21 3 1 6 1 7-1l3-6-9-6-4 5c-5-2-9-6-11-11l5-4-5-8Z"/>
+            <path d="M29 9a11 11 0 0 1 10 10M29 14a6 6 0 0 1 5 5"/>
+            <path d="m13 34-3 3m25-4 3 3"/>
+          </svg>
+          <span class="contact-label">Carlos</span>
+          <p>645 606 752</p>
+        </div>
+        <div class="contact-card">
+          <svg class="contact-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M7 13h34v23H7z"/>
+            <path d="m8 15 16 13 16-13"/>
+            <path d="m8 35 12-10m20 10L28 25"/>
+            <path d="M24 7c2 2.5 3 4 3 5.5a3 3 0 0 1-6 0C21 11 22 9.5 24 7Z"/>
+          </svg>
+          <span class="contact-label">Correo:</span>
+          <p>familiarodgall@gmail.com</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="simple-section gift-section" id="regalos">
+      <span class="section-kicker">REGALOS</span>
+      <h2>Vuestra presencia ya es un regalazo</h2>
+      <img class="gift-ornament" src="./assets/gift-driving.svg" alt="" aria-hidden="true">
+      <div class="gift-card">
+        <p class="gift-intro">Si queréis hacernos un regalo, aquí va una idea:</p>
+        <h3>Operación: carnet para María</h3>
+        <p class="gift-copy">María aún no tiene carnet. Vuestros regalos irán a sus clases, prácticas y examen. ¡Los conos de la autoescuela ya están avisados!</p>
+        <div class="gift-account">
+          <span>Cuenta provisional del fondo «Rumbo a la autoescuela»</span>
+          <strong>XXXXXXXXXXXXXXXXXX</strong>
+        </div>
+      </div>
     </section>
   </main>
 
