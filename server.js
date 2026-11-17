@@ -86,24 +86,58 @@ app.post("/api/rsvp", async (req, res) => {
   const guests = Number(body.guests || 0);
   const allergies = String(body.allergies || "").trim();
   const bus = body.bus === true;
+  const busPickup = String(body.busPickup || "").trim();
+  const busDropoff = String(body.busDropoff || "").trim();
+  const prewedding = body.prewedding === true;
+  const preweddingGuests = Number(body.preweddingGuests || 0);
+  const companions = Array.isArray(body.companions) ? body.companions : [];
   const songs = Array.isArray(body.songs) ? body.songs.slice(0, 10) : [];
 
-  if (attending && !name) {
+  if (!name) {
     return res.status(400).json({ error: "Indica tu nombre y apellidos." });
   }
 
-  if (attending && (!Number.isInteger(guests) || guests < 1 || guests > 10)) {
-    return res.status(400).json({ error: "El número de acompañantes no es válido." });
+  if (attending && (!Number.isInteger(guests) || guests < 0 || guests > 5)) {
+    return res.status(400).json({ error: "El número de acompañantes debe estar entre 0 y 5." });
+  }
+
+  if (attending && companions.length !== guests) {
+    return res.status(400).json({ error: "Los datos de los acompañantes no coinciden con el número indicado." });
+  }
+
+  if (attending && companions.some((companion) => !String(companion?.name || "").trim())) {
+    return res.status(400).json({ error: "Indica el nombre y apellidos de cada acompañante." });
+  }
+
+  if (prewedding && (!Number.isInteger(preweddingGuests) || preweddingGuests < 1 || preweddingGuests > 6)) {
+    return res.status(400).json({ error: "El número de personas de la preboda no es válido." });
+  }
+
+  if (attending && bus && !["Madrid", "Alcalá de Henares", "Meco", "No usaré esta opción"].includes(busPickup)) {
+    return res.status(400).json({ error: "Selecciona dónde subirás al autocar para la ida." });
+  }
+
+  if (attending && bus && !["Alcalá de Henares", "Madrid", "No usaré esta opción"].includes(busDropoff)) {
+    return res.status(400).json({ error: "Selecciona dónde bajarás del autocar en la vuelta." });
   }
 
   const entry = {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
     attending,
-    name: attending ? name : "",
+    name,
     guests: attending ? guests : 0,
     allergies: attending ? allergies : "",
     bus: attending ? bus : false,
+    busTrip: attending && bus ? "ida y vuelta" : "",
+    busPickup: attending && bus ? busPickup : "",
+    busDropoff: attending && bus ? busDropoff : "",
+    prewedding,
+    preweddingGuests: prewedding ? preweddingGuests : 0,
+    companions: attending ? companions.map((companion) => ({
+      name: String(companion.name).trim(),
+      allergies: String(companion.allergies || "").trim()
+    })) : [],
     songs: attending ? songs : []
   };
 

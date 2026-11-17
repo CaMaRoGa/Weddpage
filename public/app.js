@@ -17,6 +17,17 @@ const successDialog = document.getElementById("successDialog");
 const closeDialog = document.getElementById("closeDialog");
 const noneAllergies = document.getElementById("noneAllergies");
 const allergies = document.getElementById("allergies");
+const guests = document.getElementById("guests");
+const companionFields = document.getElementById("companionFields");
+const attendeeFieldsLeft = document.getElementById("attendeeFieldsLeft");
+const attendeeFieldsRight = document.getElementById("attendeeFieldsRight");
+const preweddingDetails = document.getElementById("preweddingDetails");
+const preweddingNameField = document.getElementById("preweddingNameField");
+const preweddingName = document.getElementById("preweddingName");
+const preweddingCount = document.getElementById("preweddingCount");
+const busDetails = document.getElementById("busDetails");
+const busPickup = document.getElementById("busPickup");
+const busDropoff = document.getElementById("busDropoff");
 const menuButton = document.getElementById("menuButton");
 const mobileNav = document.getElementById("mobileNav");
 
@@ -193,6 +204,81 @@ function renderSelectedSongs() {
   `).join("");
 }
 
+function renderCompanionFields() {
+  const previousCompanions = Array.from(companionFields.querySelectorAll(".companion-entry")).map((entry) => ({
+    name: entry.querySelector("[data-companion-name]").value,
+    allergies: entry.querySelector("[data-companion-allergies]").value,
+    noAllergies: entry.querySelector("[data-companion-none]").checked
+  }));
+  const count = Number(guests.value);
+
+  companionFields.innerHTML = Array.from({ length: count }, (_, index) => {
+    const companion = previousCompanions[index] || { name: "", allergies: "" };
+    return `
+      <div class="companion-entry">
+        <h3>Acompañante ${index + 1}</h3>
+        <label for="companionName${index}">Nombre y apellidos</label>
+        <input id="companionName${index}" type="text" data-companion-name required placeholder="Nombre completo">
+        <label class="companion-allergies" for="companionAllergies${index}">Alergias o intolerancias</label>
+        <label class="checkline">
+          <input type="checkbox" data-companion-none>
+          <span class="box"></span> Ninguna
+        </label>
+        <textarea id="companionAllergies${index}" data-companion-allergies rows="3" placeholder="Indica cualquier alergia o intolerancia alimentaria..."></textarea>
+      </div>
+    `;
+  }).join("");
+
+  Array.from(companionFields.querySelectorAll(".companion-entry")).forEach((entry, index) => {
+    entry.querySelector("[data-companion-name]").value = previousCompanions[index]?.name || "";
+    entry.querySelector("[data-companion-allergies]").value = previousCompanions[index]?.allergies || "";
+    const noAllergies = entry.querySelector("[data-companion-none]");
+    noAllergies.checked = previousCompanions[index]?.noAllergies || false;
+    entry.querySelector("[data-companion-allergies]").disabled = noAllergies.checked;
+  });
+}
+
+function updateAttendanceDetails() {
+  const isAttending = document.querySelector('input[name="attending"]:checked')?.value === "yes";
+  attendeeFieldsLeft.hidden = !isAttending;
+  attendeeFieldsRight.hidden = !isAttending;
+
+  form.querySelectorAll("#name, #guests, #allergies, #noneAllergies, input[name='bus'], #busPickup, #busDropoff, #songSearch, #clearSearch, #clearSongs, [data-companion-name], [data-companion-allergies], [data-companion-none]")
+    .forEach((element) => { element.disabled = !isAttending; });
+  allergies.disabled = !isAttending || noneAllergies.checked;
+  companionFields.querySelectorAll(".companion-entry").forEach((entry) => {
+    const noAllergies = entry.querySelector("[data-companion-none]").checked;
+    entry.querySelector("[data-companion-allergies]").disabled = !isAttending || noAllergies;
+  });
+}
+
+function updatePreweddingDetails() {
+  const isAttending = document.querySelector('input[name="attending"]:checked')?.value === "yes";
+  const wantsPrewedding = document.querySelector('input[name="prewedding"]:checked')?.value === "yes";
+  const needsPreweddingName = !isAttending;
+
+  preweddingDetails.hidden = !wantsPrewedding;
+  preweddingCount.disabled = !wantsPrewedding;
+  preweddingCount.required = wantsPrewedding;
+  preweddingNameField.hidden = !needsPreweddingName;
+  preweddingName.disabled = !needsPreweddingName;
+  preweddingName.required = needsPreweddingName;
+  if (!wantsPrewedding) preweddingCount.value = "";
+  if (!needsPreweddingName) preweddingName.value = "";
+}
+
+function updateBusDetails() {
+  const isAttending = document.querySelector('input[name="attending"]:checked')?.value === "yes";
+  const usesBus = document.querySelector('input[name="bus"]:checked')?.value === "yes";
+  const showDetails = isAttending && usesBus;
+
+  busDetails.hidden = !showDetails;
+  [busPickup, busDropoff].forEach((select) => {
+    select.disabled = !showDetails;
+    select.required = showDetails;
+  });
+}
+
 songSearch.addEventListener("input", () => {
   const term = songSearch.value;
   clearSearch.style.display = term ? "block" : "none";
@@ -235,6 +321,17 @@ clearSongs.addEventListener("click", () => {
   if (term.length >= 2) searchSongs(term);
 });
 
+guests.addEventListener("change", renderCompanionFields);
+
+companionFields.addEventListener("change", (event) => {
+  const checkbox = event.target.closest("[data-companion-none]");
+  if (!checkbox) return;
+
+  const allergiesInput = checkbox.closest(".companion-entry").querySelector("[data-companion-allergies]");
+  if (checkbox.checked) allergiesInput.value = "";
+  allergiesInput.disabled = checkbox.checked;
+});
+
 noneAllergies.addEventListener("change", () => {
   if (noneAllergies.checked) {
     allergies.value = "";
@@ -244,16 +341,18 @@ noneAllergies.addEventListener("change", () => {
   }
 });
 
-document.querySelectorAll('input[name="attending"], input[name="bus"]').forEach((input) => {
+document.querySelectorAll('input[name="attending"], input[name="bus"], input[name="prewedding"]').forEach((input) => {
   input.addEventListener("change", (event) => {
     document.querySelectorAll(`input[name="${event.target.name}"]`).forEach((radio) => {
       radio.closest(".choice")?.classList.toggle("active", radio.checked);
     });
 
-    if (event.target.name === "attending") {
-      const isAttending = event.target.value === "yes";
-      document.querySelectorAll("#name, #guests, #allergies, #noneAllergies, input[name='bus'], #songSearch, #clearSongs")
-        .forEach((el) => { el.disabled = !isAttending; });
+    updateAttendanceDetails();
+    updatePreweddingDetails();
+    updateBusDetails();
+    if (event.target.name === "bus" && event.target.value === "no") {
+      busPickup.value = "";
+      busDropoff.value = "";
     }
   });
 });
@@ -262,20 +361,62 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const attending = document.querySelector('input[name="attending"]:checked')?.value === "yes";
-  const bus = document.querySelector('input[name="bus"]:checked')?.value === "yes";
+  const bus = attending && document.querySelector('input[name="bus"]:checked')?.value === "yes";
+  const wantsPrewedding = document.querySelector('input[name="prewedding"]:checked')?.value === "yes";
+  const respondentName = attending
+    ? document.getElementById("name").value.trim()
+    : preweddingName.value.trim();
 
-  if (attending && !document.getElementById("name").value.trim()) {
+  if (!respondentName) {
     showToast("Por favor, indica tu nombre y apellidos.");
-    document.getElementById("name").focus();
+    (attending ? document.getElementById("name") : preweddingName).focus();
+    return;
+  }
+
+  if (wantsPrewedding && !preweddingCount.value) {
+    showToast("Indica cuántas personas vendrían a la preboda.");
+    preweddingCount.focus();
+    return;
+  }
+
+  const companionEntries = Array.from(companionFields.querySelectorAll(".companion-entry"));
+  const companions = companionEntries.map((entry) => ({
+    name: entry.querySelector("[data-companion-name]").value.trim(),
+    allergies: entry.querySelector("[data-companion-none]").checked
+      ? "Ninguna"
+      : entry.querySelector("[data-companion-allergies]").value.trim()
+  }));
+
+  const missingCompanion = companionEntries.find((entry) => !entry.querySelector("[data-companion-name]").value.trim());
+  if (attending && missingCompanion) {
+    showToast("Por favor, indica el nombre y apellidos de cada acompañante.");
+    missingCompanion.querySelector("[data-companion-name]").focus();
+    return;
+  }
+
+  if (bus && !busPickup.value) {
+    showToast("Por favor, selecciona dónde subirás al autocar para la ida.");
+    busPickup.focus();
+    return;
+  }
+
+  if (bus && !busDropoff.value) {
+    showToast("Por favor, selecciona dónde bajarás del autocar en la vuelta.");
+    busDropoff.focus();
     return;
   }
 
   const payload = {
     attending,
-    name: document.getElementById("name").value.trim(),
-    guests: Number(document.getElementById("guests").value),
-    allergies: noneAllergies.checked ? "Ninguna" : allergies.value.trim(),
+    name: respondentName,
+    guests: attending ? Number(guests.value) : 0,
+    allergies: attending ? (noneAllergies.checked ? "Ninguna" : allergies.value.trim()) : "",
+    companions: attending ? companions : [],
+    prewedding: wantsPrewedding,
+    preweddingGuests: wantsPrewedding ? Number(preweddingCount.value) : 0,
     bus,
+    busPickup: bus ? busPickup.value : "",
+    busDropoff: bus ? busDropoff.value : "",
     songs: state.selectedSongs.map((song) => ({
       id: song.id,
       title: song.title,
@@ -327,4 +468,8 @@ mobileNav.addEventListener("click", (event) => {
   }
 });
 
+renderCompanionFields();
+updateAttendanceDetails();
+updatePreweddingDetails();
+updateBusDetails();
 renderSelectedSongs();

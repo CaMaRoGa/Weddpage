@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f6f2">
+  <meta name="theme-color" content="#5a1f2b">
   <meta name="description" content="María y Carlos — 18.09.2027">
   <title>María y Carlos · 18.09.2027</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,9 +14,6 @@
 
 <body>
   <header class="site-header">
-    <a class="brand-mini" href="#inicio" aria-label="Inicio">
-      <img src="./assets/ambigram.png" alt="M y C">
-    </a>
 
     <nav class="desktop-nav" aria-label="Navegación principal">
       <a href="#inicio">INICIO</a>
@@ -54,71 +51,131 @@
       <img class="leaf" src="./assets/leaf.svg" alt="" aria-hidden="true">
     </section>
 
+    <section class="simple-section" id="boda">
+      <span class="section-kicker">18 · 09 · 2027</span>
+      <h2>Un día para recordar</h2>
+      <p>Muy pronto compartiremos aquí todos los detalles de la celebración.</p>
+    </section>
+
     <section class="content-section" id="confirmacion">
+      <div class="confirmation-heading">
+        <span class="section-kicker">CONFIRMACIÓN</span>
+        <h2>Confirma tu asistencia</h2>
+        <p>Déjanos tus datos y preferencias para ayudarnos a organizar la celebración. Responde a las preguntas que correspondan a tu caso.</p>
+      </div>
       <form id="rsvpForm" class="rsvp-card" novalidate>
-        <div class="form-column">
-          <div class="question">
-            <label>1. ¿Nos acompañas?</label>
-            <div class="choice-row">
-              <label class="choice active">
-                <input type="radio" name="attending" value="yes" checked>
-                <span class="radio"></span> Sí
-              </label>
-              <label class="choice">
-                <input type="radio" name="attending" value="no">
-                <span class="radio"></span> No
-              </label>
-            </div>
+        <div class="question attending-question">
+          <label>1. ¿Nos acompañas?</label>
+          <div class="choice-row">
+            <label class="choice active">
+              <input type="radio" name="attending" value="yes" checked>
+              <span class="radio"></span> Sí
+            </label>
+            <label class="choice">
+              <input type="radio" name="attending" value="no">
+              <span class="radio"></span> No
+            </label>
           </div>
+        </div>
 
-          <div class="question">
-            <label for="name">2. Nombre y apellidos</label>
-            <input id="name" name="name" type="text" autocomplete="name" placeholder="Escribe tu nombre completo" required>
+        <div class="question prewedding-question">
+          <label>2. ¿Te gustaría venir a nuestra preboda en Madrid?</label>
+          <div class="choice-row">
+            <label class="choice active">
+              <input type="radio" name="prewedding" value="yes" checked>
+              <span class="radio"></span> Sí
+            </label>
+            <label class="choice">
+              <input type="radio" name="prewedding" value="no">
+              <span class="radio"></span> No
+            </label>
           </div>
-
-          <div class="question">
-            <label for="guests">3. Número de acompañantes</label>
-            <select id="guests" name="guests">
+          <div class="prewedding-details" id="preweddingDetails" hidden>
+            <label for="preweddingCount">¿Cuántas personas vendríais en total a la preboda, incluyéndote?</label>
+            <select id="preweddingCount" name="preweddingCount" disabled>
+              <option value="">Selecciona el número de personas</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
               <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
             </select>
+          </div>
+        </div>
+
+        <div class="question decline-name" id="preweddingNameField" hidden>
+          <label for="preweddingName">3. Nombre y apellidos</label>
+          <input id="preweddingName" type="text" autocomplete="name" placeholder="Escribe tu nombre completo" disabled>
+        </div>
+
+        <div class="form-column attendee-fields" id="attendeeFieldsLeft">
+          <div class="question">
+            <label for="name">3. Nombre y apellidos</label>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Escribe tu nombre completo" required>
           </div>
 
           <div class="question">
             <label for="allergies">4. Alergias o intolerancias</label>
-            <textarea id="allergies" name="allergies" rows="4" placeholder="Indica cualquier alergia o intolerancia alimentaria..."></textarea>
+            <textarea id="allergies" name="allergies" rows="3" placeholder="Indica cualquier alergia o intolerancia alimentaria..."></textarea>
             <label class="checkline">
               <input id="noneAllergies" type="checkbox">
               <span class="box"></span> Ninguna
             </label>
           </div>
+
+          <div class="question">
+            <label for="guests">5. Número de acompañantes</label>
+            <select id="guests" name="guests">
+              <option value="0" selected>0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <div id="companionFields"></div>
+          </div>
+
         </div>
 
-        <div class="form-column form-column-right">
+        <div class="form-column form-column-right attendee-fields" id="attendeeFieldsRight">
           <div class="question">
-            <label>5. ¿Usarás el autocar?</label>
+            <label>6. ¿Usarás el autocar?</label>
             <div class="choice-row">
-              <label class="choice active">
-                <input type="radio" name="bus" value="yes" checked>
+              <label class="choice">
+                <input type="radio" name="bus" value="yes">
                 <span class="radio"></span> Sí
               </label>
-              <label class="choice">
-                <input type="radio" name="bus" value="no">
+              <label class="choice active">
+                <input type="radio" name="bus" value="no" checked>
                 <span class="radio"></span> No
               </label>
+            </div>
+            <div class="bus-details" id="busDetails">
+              <p class="bus-trip">Ida</p>
+              <label for="busPickup">¿Dónde subirás?</label>
+              <select id="busPickup" name="busPickup" required>
+                <option value="">Selecciona una parada</option>
+                <option value="Madrid">Madrid</option>
+                <option value="Alcalá de Henares">Alcalá de Henares</option>
+                <option value="Meco">Meco</option>
+                <option value="No usaré esta opción">No usaré esta opción</option>
+              </select>
+
+              <p class="bus-trip">Vuelta</p>
+              <label for="busDropoff">¿Dónde bajarás?</label>
+              <select id="busDropoff" name="busDropoff" required>
+                <option value="">Selecciona una parada</option>
+                <option value="Alcalá de Henares">Alcalá de Henares</option>
+                <option value="Madrid">Madrid</option>
+                <option value="No usaré esta opción">No usaré esta opción</option>
+              </select>
             </div>
           </div>
 
           <div class="question songs-question">
-            <label for="songSearch">6. ¿Qué canciones te gustaría escuchar?</label>
+            <label for="songSearch">7. ¿Qué canciones te gustaría escuchar?</label>
 
             <div class="song-search">
               <span class="search-icon" aria-hidden="true">⌕</span>
@@ -141,23 +198,18 @@
             </div>
           </div>
 
-          <button class="submit-button" type="submit">
-            <span>ENVIAR CONFIRMACIÓN</span>
-            <span>→</span>
-          </button>
         </div>
+
+        <button class="submit-button" type="submit">
+          <span>ENVIAR CONFIRMACIÓN</span>
+          <span>→</span>
+        </button>
 
         <div class="privacy-note">
           <span aria-hidden="true">♙</span>
           Tus datos se tratarán con la máxima confidencialidad y solo se utilizarán para la gestión de la boda.
         </div>
       </form>
-    </section>
-
-    <section class="simple-section" id="boda">
-      <span class="section-kicker">18 · 09 · 2027</span>
-      <h2>Un día para recordar</h2>
-      <p>Muy pronto compartiremos aquí todos los detalles de la celebración.</p>
     </section>
 
     <section class="simple-section" id="detalles">
