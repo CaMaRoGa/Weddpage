@@ -200,6 +200,6 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Boda María y Carlos: http://localhost:${PORT}`);
 });
