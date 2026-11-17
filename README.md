@@ -12,7 +12,7 @@ Proyecto completo para la web de boda del boceto proporcionado.
 - Autocar.
 - Buscador real de canciones.
 - Resultados con portada, título y artista.
-- Botón ▶ para reproducir la previsualización.
+- Enlace para abrir cada canción en Spotify.
 - Botón + para añadir una canción.
 - Lista de canciones seleccionadas.
 - Límite de 10 canciones por invitado.
@@ -53,22 +53,27 @@ data/rsvps.json
 Para una boda real conviene sustituir este almacenamiento por una base de datos
 (PostgreSQL, MySQL, Supabase, Firebase, etc.) y proteger un panel de administración.
 
-## Buscador musical
+## Buscador musical de Spotify
 
-El backend consulta el iTunes Search API desde `/api/songs` y devuelve:
+El backend consulta la Spotify Web API desde `/api/songs` y devuelve título,
+artista, álbum, carátula y enlace a Spotify. Las canciones se buscan en el
+catálogo de España y se pueden abrir en Spotify; la API no ofrece una
+previsualización reproducible para todos los resultados.
 
-- título
-- artista
-- álbum
-- carátula
-- URL de la previsualización, cuando existe
-- URL de la canción en la tienda
+El servidor usa el flujo Client Credentials. Crea una aplicación en
+[Spotify for Developers](https://developer.spotify.com/dashboard) y configura
+sus credenciales como variables de entorno. En PowerShell:
 
-La previsualización se reproduce mediante el elemento de audio del navegador y no se
-descarga ni se almacena.
+```powershell
+$env:SPOTIFY_CLIENT_ID = "tu-client-id"
+$env:SPOTIFY_CLIENT_SECRET = "tu-client-secret"
+npm start
+```
 
-Antes de publicar el buscador en una web pública, revisa las condiciones de uso y
-atribución de Apple/iTunes aplicables a las previsualizaciones y carátulas.
+En producción, añade esas variables a la configuración segura del servicio.
+No pongas el secreto en `public/`, en el navegador ni en el repositorio. Si
+faltan credenciales, el buscador informa que Spotify no está configurado.
+
 
 ## Personalización rápida
 
@@ -102,8 +107,3 @@ Para publicar:
 4. Configura un dominio y HTTPS.
 5. Sustituye `data/rsvps.json` por una base de datos si habrá muchos invitados.
 
-## Importante sobre las previsualizaciones
-
-El proyecto usa el iTunes Search API porque sus resultados de canciones pueden incluir
-`previewUrl`, una previsualización de 30 segundos cuando está disponible. Apple indica
-que el contenido promocional de su API tiene condiciones específicas de uso y atribución.

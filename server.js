@@ -10,9 +10,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, "data");
 const RSVP_FILE = path.join(DATA_DIR, "rsvps.json");
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 
 app.use(express.json({ limit: "100kb" }));
 app.use(express.static(path.join(__dirname, "public")));
+
+let spotifyToken = null;
+let spotifyTokenExpiresAt = 0;
+let spotifyTokenRequest = null;
 
 async function readRsvps() {
   try {
@@ -28,9 +34,44 @@ async function writeRsvps(items) {
   await fs.writeFile(RSVP_FILE, JSON.stringify(items, null, 2), "utf8");
 }
 
-// Buscador de canciones: proxy para no exponer/depender de llamadas cross-origin
-// desde el navegador. Apple devuelve metadatos y previewUrl para canciones
-// cuando hay una previsualización disponible.
+async function getSpotifyAccessToken() {
+  if (spotifyToken && Date.now() < spotifyTokenExpiresAt) {
+    return spotifyToken;
+  }
+
+  if (spotifyTokenRequest) {
+    return spotifyTokenRequest;
+  }
+
+  spotifyTokenRequest = (async () => {
+    const credentials = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString("base64");
+    const response = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({ grant_type: "client_credentials" })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Spotify token respondió ${response.status}`);
+    }
+
+    const data = await response.json();
+    spotifyToken = data.access_token;
+    spotifyTokenExpiresAt = Date.now() + Math.max(0, data.expires_in - 60) * 1000;
+    return spotifyToken;
+  })();
+
+  try {
+    return await spotifyTokenRequest;
+  } finally {
+    spotifyTokenRequest = null;
+  }
+}
+
+// El secreto de Spotify solo se usa en el servidor; el navegador recibe metadatos y enlaces.
 app.get("/api/songs", async (req, res) => {
   const term = String(req.query.term || "").trim();
 
@@ -42,32 +83,39 @@ app.get("/api/songs", async (req, res) => {
     return res.status(400).json({ error: "La búsqueda es demasiado larga." });
   }
 
-  try {
-    const url = new URL("https://itunes.apple.com/search");
-    url.searchParams.set("term", term);
-    url.searchParams.set("country", "ES");
-    url.searchParams.set("media", "music");
-    url.searchParams.set("entity", "song");
-    url.searchParams.set("limit", "8");
-    url.searchParams.set("lang", "es_es");
+  if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
+    return res.status(503).json({
+      error: "El buscador de Spotify aún no está configurado en el servidor."
+    });
+  }
 
-    const response = await fetch(url);
+  try {
+    const accessToken = await getSpotifyAccessToken();
+    const url = new URL("https://api.spotify.com/v1/search");
+    url.searchParams.set("q", term);
+    url.searchParams.set("type", "track");
+    url.searchParams.set("market", "ES");
+    url.searchParams.set("limit", "8");
+
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
 
     if (!response.ok) {
-      throw new Error(`iTunes respondió ${response.status}`);
+      throw new Error(`Spotify respondió ${response.status}`);
     }
 
     const data = await response.json();
-
-    const results = (data.results || []).map((song) => ({
-      id: song.trackId,
-      title: song.trackName,
-      artist: song.artistName,
-      album: song.collectionName || "",
-      artwork: song.artworkUrl100 || song.artworkUrl60 || "",
-      previewUrl: song.previewUrl || null,
-      storeUrl: song.trackViewUrl || song.collectionViewUrl || ""
-    }));
+    const results = (data.tracks?.items || [])
+      .filter((track) => track.id)
+      .map((track) => ({
+        id: track.id,
+        title: track.name,
+        artist: track.artists.map((artist) => artist.name).join(", "),
+        album: track.album?.name || "",
+        artwork: track.album?.images?.[0]?.url || "",
+        spotifyUrl: `https://open.spotify.com/track/${encodeURIComponent(track.id)}`
+      }));
 
     res.json({ results });
   } catch (error) {

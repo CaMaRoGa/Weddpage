@@ -523,9 +523,9 @@ textarea:focus,
 
 .icon-button:hover { background: var(--vine-soft); }
 
-.play-button.playing {
-  background: var(--vine-soft);
-  border-color: var(--vine);
+.spotify-link {
+  color: var(--ink);
+  text-decoration: none;
 }
 
 .plus-button {

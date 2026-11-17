@@ -1,7 +1,5 @@
 const state = {
   selectedSongs: [],
-  currentAudio: null,
-  currentPreviewId: null,
   searchTimer: null
 };
 
@@ -47,52 +45,6 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function stopAudio() {
-  if (state.currentAudio) {
-    state.currentAudio.pause();
-    state.currentAudio.currentTime = 0;
-  }
-  state.currentAudio = null;
-  state.currentPreviewId = null;
-  document.querySelectorAll(".play-button.playing").forEach((button) => {
-    button.classList.remove("playing");
-    button.textContent = "▶";
-  });
-}
-
-function playPreview(song, button) {
-  if (!song.previewUrl) {
-    showToast("Esta canción no tiene previsualización disponible.");
-    return;
-  }
-
-  if (state.currentPreviewId === song.id && state.currentAudio) {
-    stopAudio();
-    return;
-  }
-
-  stopAudio();
-
-  const audio = new Audio(song.previewUrl);
-  audio.preload = "none";
-  state.currentAudio = audio;
-  state.currentPreviewId = song.id;
-
-  button.classList.add("playing");
-  button.textContent = "Ⅱ";
-
-  audio.addEventListener("ended", stopAudio);
-  audio.addEventListener("error", () => {
-    stopAudio();
-    showToast("No se ha podido reproducir la previsualización.");
-  });
-
-  audio.play().catch(() => {
-    stopAudio();
-    showToast("El navegador ha bloqueado la reproducción.");
-  });
-}
-
 function renderResults(results) {
   if (!results.length) {
     songResults.innerHTML = `<div class="empty-search">No hemos encontrado canciones.</div>`;
@@ -108,14 +60,13 @@ function renderResults(results) {
           <div class="song-title">${escapeHtml(song.title)}</div>
           <div class="song-artist">${escapeHtml(song.artist)}</div>
         </div>
-        <button
-          type="button"
-          class="icon-button play-button"
-          data-action="play"
-          data-id="${escapeHtml(song.id)}"
-          aria-label="Reproducir previsualización de ${escapeHtml(song.title)}"
-          ${song.previewUrl ? "" : "disabled"}
-        >▶</button>
+        <a
+          class="icon-button spotify-link"
+          href="${escapeHtml(song.spotifyUrl)}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir ${escapeHtml(song.title)} en Spotify"
+        >↗</a>
         <button
           type="button"
           class="icon-button plus-button"
@@ -128,8 +79,7 @@ function renderResults(results) {
     `;
   }).join("");
 
-  // Guardamos temporalmente los resultados en los botones para poder recuperar el objeto.
-  songResults.querySelectorAll("[data-action]").forEach((button) => {
+  songResults.querySelectorAll('[data-action="add"]').forEach((button) => {
     const song = results.find((item) => String(item.id) === String(button.dataset.id));
     button._song = song;
   });
@@ -152,7 +102,10 @@ async function searchSongs(term) {
     renderResults(data.results || []);
   } catch (error) {
     console.error(error);
-    songResults.innerHTML = `<div class="empty-search">No se ha podido realizar la búsqueda.</div>`;
+    const message = error instanceof TypeError
+      ? "No se ha podido conectar con el buscador de Spotify."
+      : error.message || "No se ha podido realizar la búsqueda.";
+    songResults.innerHTML = `<div class="empty-search">${escapeHtml(message)}</div>`;
   }
 }
 
@@ -290,22 +243,13 @@ songSearch.addEventListener("input", () => {
 clearSearch.addEventListener("click", () => {
   songSearch.value = "";
   clearSearch.style.display = "none";
-  stopAudio();
   songResults.innerHTML = `<div class="empty-search">Empieza a escribir para buscar una canción.</div>`;
   songSearch.focus();
 });
 
 songResults.addEventListener("click", (event) => {
   const button = event.target.closest("[data-action]");
-  if (!button || !button._song) return;
-
-  if (button.dataset.action === "play") {
-    playPreview(button._song, button);
-  }
-
-  if (button.dataset.action === "add") {
-    addSong(button._song);
-  }
+  if (button?.dataset.action === "add" && button._song) addSong(button._song);
 });
 
 selectedSongsEl.addEventListener("click", (event) => {
@@ -423,7 +367,7 @@ form.addEventListener("submit", async (event) => {
       artist: song.artist,
       album: song.album,
       artwork: song.artwork,
-      storeUrl: song.storeUrl
+      spotifyUrl: song.spotifyUrl
     }))
   };
 
