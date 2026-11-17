@@ -10,6 +10,11 @@
   --vine-deep: #526247;
   --vine-light: #c3cca5;
   --vine-soft: #eff1e8;
+  --linen: #f5f0e5;
+  --sage-mist: #e4eadc;
+  --sage-deep: #627254;
+  --rose-mist: #f2e7df;
+  --wheat: #eee4cd;
   --button: #4c5c42;
   --white: #ffffff;
   --serif: "Cormorant Garamond", Georgia, serif;
@@ -17,17 +22,16 @@
   --shadow: 0 18px 45px rgba(30, 31, 29, .06);
 }
 
+#boda .wedding-schedule .wedding-celebration { color: var(--vine-deep); }
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  color: #fff8f5;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(173,112,122,.24), transparent 35%),
-    radial-gradient(ellipse at 82% 55%, rgba(135,148,107,.13), transparent 38%),
-    var(--panel-wine);
+  color: #4d202a;
+  background: var(--linen);
   font-family: var(--serif);
 }
 
@@ -53,7 +57,30 @@ body::before {
   align-items: center;
   padding: 0 34px;
   border-radius: 10px 10px 0 0;
-  background: radial-gradient(ellipse at center, rgba(135,148,107,.11), transparent 72%);
+  color: #4d202a;
+  background: radial-gradient(ellipse at center, rgba(135,148,107,.12), transparent 72%);
+}
+
+.music-toggle {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 20;
+  padding: 11px 15px;
+  border: 1px solid rgba(242,213,165,.72);
+  border-radius: 999px;
+  color: #4d202a;
+  background: #f2d5a5;
+  box-shadow: 0 3px 12px rgba(30,10,16,.18);
+  cursor: pointer;
+  font: 600 10px var(--sans);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.music-toggle:hover,
+.music-toggle:focus-visible {
+  background: #fff0d4;
 }
 
 .brand-mini {
@@ -96,11 +123,14 @@ body::before {
 .mobile-nav a:hover { color: var(--vine-light); }
 
 .hero {
-  width: min(1100px, calc(100% - 42px));
+  width: 100%;
   margin: 0 auto;
-  padding: 24px 40px 50px;
+  padding: 24px 40px 56px;
   text-align: center;
-  background: radial-gradient(ellipse at 50% 8%, rgba(135,148,107,.12), transparent 58%);
+  color: #fff8f5;
+  background:
+    radial-gradient(ellipse at 50% 8%, rgba(135,148,107,.2), transparent 58%),
+    linear-gradient(145deg, #70434b, #744954);
 }
 
 .hero-logo {
@@ -150,6 +180,74 @@ body::before {
   margin: 0;
 }
 
+.countdown {
+  width: min(520px, 100%);
+  margin: 24px auto 0;
+  padding: 16px 20px 13px;
+  border: 1px solid rgba(242,213,165,.42);
+  border-radius: 12px;
+  background: rgba(62,23,31,.28);
+}
+
+.countdown-caption {
+  margin: 0 0 10px;
+  color: #f2d5a5;
+  font: 600 10px var(--sans);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.countdown-units {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.countdown [hidden] { display: none; }
+
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.countdown-value {
+  color: #fff8f5;
+  font: 500 clamp(26px, 4vw, 36px)/1 var(--serif);
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-name {
+  color: #f2d5a5;
+  font: 500 9px var(--sans);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.countdown-message {
+  margin: 10px 0;
+  color: #f2d5a5;
+  font: italic 28px/1.2 var(--serif);
+}
+
+.music-player {
+  position: fixed;
+  top: 0;
+  left: -220px;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.music-player iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .hero-ornament {
   display: block;
   width: min(620px, 92%);
@@ -158,11 +256,13 @@ body::before {
 }
 
 .content-section {
-  width: min(1000px, calc(100% - 80px));
-  margin: 0 auto 90px;
-  padding-top: 48px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 58px max(24px, calc((100% - 1000px) / 2)) 76px;
   position: relative;
-  border-top: 1px solid rgba(135,148,107,.48);
+  background:
+    radial-gradient(ellipse at 88% 0, rgba(135,148,107,.14), transparent 42%),
+    var(--sage-mist);
 }
 
 .confirmation-heading {
@@ -172,14 +272,14 @@ body::before {
 
 .confirmation-heading h2 {
   margin: 12px 0;
-  color: #f2d5a5;
+  color: var(--vine-deep);
   font-size: clamp(40px, 5vw, 48px);
   font-weight: 500;
 }
 
 .confirmation-heading p {
   margin: 0;
-  color: #f0dfe1;
+  color: #4d202a;
   font-size: 17px;
 }
 
@@ -192,9 +292,10 @@ body::before {
   display: block;
   border: 1px solid rgba(135,148,107,.62);
   border-radius: 8px;
+  color: #fff8f5;
   background:
-    radial-gradient(ellipse at 100% 0, rgba(135,148,107,.16), transparent 42%),
-    var(--panel-deep);
+    radial-gradient(ellipse at 100% 0, rgba(195,204,165,.16), transparent 42%),
+    #43523b;
   padding: 23px 26px 22px;
 }
 
@@ -604,11 +705,10 @@ textarea:focus,
 }
 
 .simple-section {
-  width: min(1000px, calc(100% - 80px));
-  margin: 90px auto;
+  width: 100%;
+  margin: 0;
   text-align: center;
-  padding: 70px 25px;
-  border-top: 1px solid rgba(135,148,107,.48);
+  padding: 72px 25px;
 }
 
 .section-kicker {
@@ -618,7 +718,7 @@ textarea:focus,
 }
 
 .simple-section h2 {
-  color: #f2d5a5;
+  color: var(--vine-deep);
   font-size: 48px;
   font-weight: 500;
   margin: 12px 0;
@@ -626,8 +726,44 @@ textarea:focus,
 
 .simple-section p {
   font-size: 20px;
+  color: #4d202a;
+}
+
+#boda {
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(232,189,196,.2), transparent 48%),
+    var(--linen);
+}
+
+#detalles {
+  background:
+    radial-gradient(circle at 15% 50%, rgba(255,255,255,.45), transparent 36%),
+    #e7e5ed;
+}
+
+#alojamiento {
+  color: #fff8f5;
+  background:
+    radial-gradient(ellipse at 80% 0, rgba(195,204,165,.2), transparent 44%),
+    linear-gradient(135deg, #68775a, #526247);
+}
+
+#alojamiento .section-kicker,
+#alojamiento h2,
+#alojamiento > p {
   color: #fff8f5;
 }
+
+#contacto {
+  background:
+    radial-gradient(ellipse at 10% 100%, rgba(255,255,255,.45), transparent 42%),
+    #e1ebe6;
+}
+
+#boda .section-kicker,
+#detalles .section-kicker,
+#confirmacion .section-kicker,
+#contacto .section-kicker { color: var(--vine-deep); }
 
 .contact-ornament {
   display: block;
@@ -721,14 +857,20 @@ textarea:focus,
 .gift-section {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(135,148,107,.72);
-  border-radius: 22px;
+  width: 100%;
+  margin: 0;
+  padding: 72px 20px;
+  border: 0;
+  border-radius: 0;
   background:
-    radial-gradient(ellipse at 2% 8%, rgba(135,148,107,.24), transparent 40%),
-    radial-gradient(ellipse at 50% 0, rgba(232,189,196,.2), transparent 55%),
-    linear-gradient(145deg, rgba(77,32,42,.65), rgba(61,24,33,.48));
-  box-shadow: 0 22px 55px rgba(30,10,16,.16);
+    radial-gradient(ellipse at 3% 12%, rgba(135,148,107,.22), transparent 42%),
+    radial-gradient(ellipse at 100% 100%, rgba(255,255,255,.55), transparent 44%),
+    var(--wheat);
+  box-shadow: none;
 }
+
+.gift-section .section-kicker { color: #793944; }
+.gift-section h2 { color: var(--vine-deep); }
 
 .gift-ornament {
   display: block;
@@ -829,9 +971,7 @@ textarea:focus,
   overflow: hidden;
   border: 1px solid rgba(135,148,107,.62);
   border-radius: 8px;
-  background:
-    linear-gradient(145deg, rgba(135,148,107,.13), transparent 55%),
-    var(--panel-deep);
+  background: linear-gradient(145deg, #fffdf7, #ece9dd);
 }
 
 .accommodation-image {
@@ -866,13 +1006,13 @@ textarea:focus,
 
 .accommodation-card h3 {
   margin: 0 0 14px;
-  color: #fff8f5;
+  color: var(--vine-deep);
   font: 500 25px/1.15 var(--serif);
 }
 
 .accommodation-card-content a,
 .accommodation-map > a {
-  color: #f2d5a5;
+  color: #526247;
   font: 600 11px var(--sans);
   letter-spacing: .06em;
   text-decoration: none;
@@ -893,23 +1033,28 @@ textarea:focus,
 }
 
 .accommodation-map h3 {
-  margin: 0 0 18px;
+  margin: 0 0 12px;
   color: #f2d5a5;
   font-size: 32px;
   font-weight: 500;
 }
 
-.accommodation-map iframe {
-  width: 100%;
-  height: clamp(320px, 55vw, 520px);
-  border: 1px solid rgba(135,148,107,.62);
-  border-radius: 8px;
+.accommodation-map p {
+  margin: 0 auto 18px;
+  color: #f2eadc;
 }
 
 .accommodation-map > a {
   display: inline-block;
-  margin-top: 14px;
+  margin-top: 0;
+  padding: 13px 20px;
+  border: 1px solid rgba(242,213,165,.75);
+  border-radius: 999px;
+  background: #f2d5a5;
+  color: #526247;
 }
+
+#alojamiento .accommodation-map > a { color: #526247; }
 
 .wedding-schedule {
   position: relative;
@@ -931,6 +1076,8 @@ textarea:focus,
   background: rgba(242,213,165,.6);
 }
 
+#boda .wedding-schedule::before { background: rgba(82,98,71,.42); }
+
 .wedding-schedule li {
   position: relative;
   display: grid;
@@ -950,10 +1097,14 @@ textarea:focus,
   background: #f2d5a5;
 }
 
+#boda .wedding-schedule li::before { background: var(--vine-deep); }
+
 .wedding-schedule time {
   color: #f2d5a5;
   font: 600 23px var(--sans);
 }
+
+#boda .wedding-schedule time { color: var(--vine-deep); }
 
 .schedule-icon {
   display: grid;
@@ -972,6 +1123,8 @@ textarea:focus,
   filter: drop-shadow(0 2px 3px rgba(0,0,0,.2));
 }
 
+#boda .schedule-icon svg { stroke: var(--vine-deep); }
+
 .wedding-schedule li > span {
   font-family: var(--serif);
   font-size: 26px;
@@ -982,6 +1135,8 @@ textarea:focus,
   color: #fff8f5;
 }
 
+#boda .wedding-schedule li > span { color: #4d202a; }
+
 .wedding-schedule .wedding-celebration {
   color: #ffffff;
   font-weight: 700;
@@ -989,17 +1144,29 @@ textarea:focus,
 
 .details-ornament {
   display: block;
-  width: min(145px, 40vw);
+  width: min(185px, 50vw);
   height: auto;
   margin: 8px auto 14px;
-  filter: drop-shadow(0 3px 4px rgba(30,10,16,.22));
 }
 
 .dress-code-section {
-  width: min(1000px, calc(100% - 80px));
-  margin: 0 auto;
-  padding: 18px 10px 0;
-  border-top: 1px solid rgba(135,148,107,.48);
+  width: 100%;
+  margin: 0;
+  padding: 72px 25px;
+  border-top: 0;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 92% 50%, rgba(255,255,255,.55), transparent 36%),
+    var(--rose-mist);
+}
+
+.dress-code-section .section-kicker { color: var(--vine-deep); }
+
+.dress-code-section h2 {
+  margin: 12px 0;
+  color: var(--vine-deep);
+  font-size: 48px;
+  font-weight: 500;
 }
 
 .dress-code {
@@ -1020,17 +1187,9 @@ textarea:focus,
   filter: drop-shadow(0 3px 4px rgba(30,10,16,.22));
 }
 
-.dress-code h3 {
-  margin: 0;
-  color: #f2d5a5;
-  font: 600 10px var(--sans);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
 .dress-code p {
   margin: 3px 0 0;
-  color: #fff8f5;
+  color: #4d202a;
   max-width: 720px;
   font-size: 15px;
   line-height: 1.45;
@@ -1241,7 +1400,7 @@ textarea:focus,
     display: block;
     width: 17px;
     height: 1px;
-    background: #fff8f5;
+    background: #793944;
   }
 
   .mobile-nav {
@@ -1294,14 +1453,33 @@ textarea:focus,
     font-size: 17px;
   }
 
+  .countdown {
+    margin-top: 20px;
+    padding: 14px 12px 12px;
+  }
+
+  .countdown-units { gap: 4px; }
+
+  .countdown-name {
+    font-size: 8px;
+    letter-spacing: .04em;
+  }
+
+  .music-toggle {
+    top: 10px;
+    right: 10px;
+    padding: 10px 12px;
+    font-size: 9px;
+  }
+
   .hero-ornament {
     width: min(520px, 96%);
     margin-top: 18px;
   }
 
   .content-section {
-    width: calc(100% - 28px);
-    padding-top: 36px;
+    width: 100%;
+    padding: 36px 14px 52px;
   }
 
   .confirmation-heading p {
@@ -1331,13 +1509,14 @@ textarea:focus,
   }
 
   .simple-section {
-    width: calc(100% - 40px);
-    margin: 65px auto;
-    padding: 45px 10px;
+    width: 100%;
+    margin: 0;
+    padding: 48px 20px;
   }
 
   .dress-code-section {
-    width: calc(100% - 40px);
+    width: 100%;
+    padding: 48px 20px;
   }
 
   .dress-code {
@@ -1349,7 +1528,8 @@ textarea:focus,
     width: 76px;
   }
 
-  .simple-section h2 { font-size: 38px; }
+  .simple-section h2,
+  .dress-code-section h2 { font-size: 38px; }
 
   .schedule-venues {
     grid-template-columns: 1fr;
@@ -1420,11 +1600,12 @@ textarea:focus,
   .wedding-schedule li > span { font-size: 21px; }
 
   .details-ornament {
-    width: min(125px, 38vw);
+    width: min(175px, 52vw);
   }
 }
 
 @media (max-width: 390px) {
   .rsvp-card { padding-left: 10px; padding-right: 10px; }
   .song-row { gap: 5px; }
+  .music-toggle { padding: 8px 9px; font-size: 8px; }
 }

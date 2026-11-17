@@ -53,6 +53,13 @@ data/rsvps.json
 Para una boda real conviene sustituir este almacenamiento por una base de datos
 (PostgreSQL, MySQL, Supabase, Firebase, etc.) y proteger un panel de administración.
 
+## Música del inicio
+
+La canción se carga desde el reproductor oficial de YouTube, que permanece oculto.
+El botón de la esquina superior derecha permite iniciar o detener la música.
+Abre la web desde `http://localhost:3000` o desde el dominio publicado, no
+abriendo `public/index.html` directamente, porque YouTube necesita un origen web.
+
 ## Buscador musical de Spotify
 
 El backend consulta la Spotify Web API desde `/api/songs` y devuelve título,
@@ -73,6 +80,8 @@ npm start
 En producción, añade esas variables a la configuración segura del servicio.
 No pongas el secreto en `public/`, en el navegador ni en el repositorio. Si
 faltan credenciales, el buscador informa que Spotify no está configurado.
+Abre la web desde `http://localhost:3000` con el servidor en marcha; abrir
+`public/index.html` directamente no permite al buscador llamar a `/api/songs`.
 
 
 ## Personalización rápida

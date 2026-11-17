@@ -28,6 +28,78 @@ const busPickup = document.getElementById("busPickup");
 const busDropoff = document.getElementById("busDropoff");
 const menuButton = document.getElementById("menuButton");
 const mobileNav = document.getElementById("mobileNav");
+const musicToggle = document.getElementById("musicToggle");
+const youtubeVideoUrl = "https://www.youtube.com/watch?v=QCZZwZQ4qNs";
+let musicPlayer = null;
+let musicPlayerReady = false;
+let youtubeApiFailed = false;
+let youtubePlayerFailed = false;
+
+function updateMusicToggle(isPlaying) {
+  musicToggle.textContent = isPlaying ? "Quitar música" : "Activar música";
+  musicToggle.setAttribute("aria-label", isPlaying ? "Quitar música" : "Activar música");
+  musicToggle.setAttribute("aria-pressed", String(isPlaying));
+}
+
+function stopAudio() {
+  if (musicPlayerReady) musicPlayer.stopVideo();
+  updateMusicToggle(false);
+}
+
+function initializeYoutubePlayer() {
+  window.onYouTubeIframeAPIReady = () => {
+    musicPlayer = new window.YT.Player("youtubeMusicPlayer", {
+      events: {
+        onReady: () => {
+          musicPlayerReady = true;
+        },
+        onStateChange: (event) => {
+          updateMusicToggle(event.data === window.YT.PlayerState.PLAYING);
+        },
+        onError: (event) => {
+          console.error("Error en el reproductor de YouTube:", event.data);
+          youtubePlayerFailed = true;
+          updateMusicToggle(false);
+          showToast(window.location.protocol === "file:"
+            ? "Abre la web desde http://localhost:3000 o desde su dirección publicada para reproducir YouTube."
+            : "No se ha podido cargar la canción desde YouTube.");
+        }
+      }
+    });
+  };
+
+  const youtubeApi = document.createElement("script");
+  youtubeApi.src = "https://www.youtube.com/iframe_api";
+  youtubeApi.async = true;
+  youtubeApi.onerror = () => {
+    youtubeApiFailed = true;
+    console.error("No se pudo cargar la API del reproductor de YouTube.");
+    showToast("No se ha podido conectar con YouTube. Puedes abrir la canción desde el reproductor.");
+  };
+  document.head.append(youtubeApi);
+}
+
+musicToggle.addEventListener("click", () => {
+  if (youtubePlayerFailed) {
+    window.open(youtubeVideoUrl, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  if (!musicPlayerReady) {
+    if (youtubeApiFailed) {
+      window.open(youtubeVideoUrl, "_blank", "noopener,noreferrer");
+    } else {
+      showToast("El reproductor de YouTube se está cargando. Inténtalo de nuevo en un momento.");
+    }
+    return;
+  }
+
+  if (musicPlayer.getPlayerState() === window.YT.PlayerState.PLAYING) {
+    stopAudio();
+  } else {
+    musicPlayer.playVideo();
+  }
+});
 
 function showToast(message) {
   toast.textContent = message;
@@ -92,6 +164,11 @@ async function searchSongs(term) {
     return;
   }
 
+  if (window.location.protocol === "file:") {
+    songResults.innerHTML = `<div class="empty-search">Abre la web desde http://localhost:3000 (con el servidor iniciado), no desde index.html.</div>`;
+    return;
+  }
+
   songResults.innerHTML = `<div class="empty-search">Buscando canciones...</div>`;
 
   try {
@@ -103,7 +180,7 @@ async function searchSongs(term) {
   } catch (error) {
     console.error(error);
     const message = error instanceof TypeError
-      ? "No se ha podido conectar con el buscador de Spotify."
+      ? "No se ha podido conectar con el servidor de la web. Comprueba que esté iniciado."
       : error.message || "No se ha podido realizar la búsqueda.";
     songResults.innerHTML = `<div class="empty-search">${escapeHtml(message)}</div>`;
   }
@@ -412,8 +489,75 @@ mobileNav.addEventListener("click", (event) => {
   }
 });
 
+const weddingCountdown = document.getElementById("weddingCountdown");
+
+if (weddingCountdown) {
+  const madridDateFormatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/Madrid",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23"
+  });
+  const getMadridDateParts = (date) => Object.fromEntries(
+    madridDateFormatter.formatToParts(date).map(({ type, value }) => [type, value])
+  );
+  const targetUtcGuess = Date.UTC(2027, 8, 18);
+  const targetMadridParts = getMadridDateParts(new Date(targetUtcGuess));
+  const madridOffsetAtTarget = Date.UTC(
+    Number(targetMadridParts.year),
+    Number(targetMadridParts.month) - 1,
+    Number(targetMadridParts.day),
+    Number(targetMadridParts.hour),
+    Number(targetMadridParts.minute),
+    Number(targetMadridParts.second)
+  ) - targetUtcGuess;
+  const weddingDate = new Date(targetUtcGuess - madridOffsetAtTarget);
+  const countdownUnits = weddingCountdown.querySelector(".countdown-units");
+  const countdownCaption = weddingCountdown.querySelector(".countdown-caption");
+  const countdownMessage = weddingCountdown.querySelector(".countdown-message");
+  let countdownTimer = null;
+
+  const updateWeddingCountdown = () => {
+    const now = new Date();
+    const remaining = weddingDate.getTime() - now.getTime();
+
+    if (remaining <= 0) {
+      countdownUnits.hidden = true;
+      countdownCaption.hidden = true;
+      countdownMessage.hidden = false;
+      const madridToday = getMadridDateParts(now);
+      countdownMessage.textContent = madridToday.year === "2027"
+        && madridToday.month === "09"
+        && madridToday.day === "18"
+        ? "¡Hoy es el gran día!"
+        : "¡Gracias por celebrar con nosotros!";
+      if (countdownTimer !== null) window.clearInterval(countdownTimer);
+      return;
+    }
+
+    const totalSeconds = Math.floor(remaining / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    weddingCountdown.querySelector("[data-countdown-days]").textContent = String(days).padStart(3, "0");
+    weddingCountdown.querySelector("[data-countdown-hours]").textContent = String(hours).padStart(2, "0");
+    weddingCountdown.querySelector("[data-countdown-minutes]").textContent = String(minutes).padStart(2, "0");
+    weddingCountdown.querySelector("[data-countdown-seconds]").textContent = String(seconds).padStart(2, "0");
+  };
+
+  updateWeddingCountdown();
+  countdownTimer = window.setInterval(updateWeddingCountdown, 1000);
+}
+
 renderCompanionFields();
 updateAttendanceDetails();
 updatePreweddingDetails();
 updateBusDetails();
 renderSelectedSongs();
+initializeYoutubePlayer();

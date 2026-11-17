@@ -13,6 +13,8 @@
 </head>
 
 <body>
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="Activar música" aria-pressed="false">Activar música</button>
+
   <header class="site-header">
 
     <nav class="desktop-nav" aria-label="Navegación principal">
@@ -51,6 +53,27 @@
         Nos hace mucha ilusión compartir este día tan especial con vosotros.<br>
         Por favor, confirma tu asistencia antes del 30 de junio de 2027.
       </p>
+      <div class="countdown" id="weddingCountdown" role="timer" aria-label="Cuenta atrás para el 18 de septiembre de 2027, según la zona horaria de Madrid">
+        <p class="countdown-caption">Faltan</p>
+        <div class="countdown-units">
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-days>000</span><span class="countdown-name">Días</span></div>
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-hours>00</span><span class="countdown-name">Horas</span></div>
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-minutes>00</span><span class="countdown-name">Minutos</span></div>
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-seconds>00</span><span class="countdown-name">Segundos</span></div>
+        </div>
+        <p class="countdown-message" hidden></p>
+      </div>
+      <div class="music-player" aria-hidden="true">
+        <iframe
+          id="youtubeMusicPlayer"
+          src="https://www.youtube-nocookie.com/embed/QCZZwZQ4qNs?enablejsapi=1&amp;loop=1&amp;playlist=QCZZwZQ4qNs&amp;playsinline=1&amp;rel=0"
+          title="Nuestra canción en YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          referrerpolicy="strict-origin-when-cross-origin"
+          tabindex="-1"
+          allowfullscreen>
+        </iframe>
+      </div>
       <img class="hero-ornament" src="./assets/hero-ornament.svg" alt="" aria-hidden="true">
     </section>
 
@@ -137,7 +160,7 @@
     <section class="simple-section" id="detalles">
       <span class="section-kicker">DETALLES</span>
       <h2>Próximamente</h2>
-      <img class="details-ornament" src="./assets/day-remember-ornament.png" alt="" aria-hidden="true">
+      <img class="details-ornament" src="./assets/details-wedding-car.png" alt="" aria-hidden="true">
       <p>El horario del transporte, el lugar de celebración de la preboda y toda la información que necesitaréis para acompañarnos.</p>
     </section>
 
@@ -154,7 +177,7 @@
             </div>
             <div class="accommodation-card-content">
               <h3>Hotel Alcalá Plaza</h3>
-              <a href="https://www.google.es/maps/place/Hotel+Alcal%C3%A1+Plaza/@40.5002742,-3.3494097,15z/data=!4m13!1m2!2m1!1sHoteles!3m9!1s0xd424eabec9ddecd:0x5120d0053d11c6b0!5m2!4m1!1i2!8m2!3d40.5003075!4d-3.3353119!15sCgdIb3RlbGVzkgEFaG90ZWyqATwQASoLIgdob3RlbGVzKA4yHhABIhoBXoTJOxP2P7auU8Kq7sysydwx7Y0yaM5nlzILEAIiB2hvdGVsZXPgAQA!16s%2Fg%2F1wt3pqsq?entry=ttu&amp;g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+              <a href="https://www.google.es/maps/@40.5003075,-3.3353119,15z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3" target="_blank" rel="noopener noreferrer">Ver en la lista de Google Maps</a>
             </div>
           </article>
         </li>
@@ -166,7 +189,7 @@
             </div>
             <div class="accommodation-card-content">
               <h3>ibis budget Madrid Alcalá de Henares La Dehesa</h3>
-              <a href="https://www.google.es/maps/place/ibis+budget+Madrid+Alcala+de+Henares+La+Dehesa/@40.5002742,-3.3494097,15z/data=!3m1!5s0xd424eac82e9bca3:0xa3d4d09ad808fd50!4m13!1m2!2m1!1sHoteles!3m9!1s0xd424c03ffffff03:0x39e281a63cb71d45!5m2!4m1!1i2!8m2!3d40.5001309!4d-3.3368659!15sCgdIb3RlbGVzkgEFaG90ZWyqATwQASoLIgdob3RlbGVzKA4yHhABIhoBXoTJOxP2P7auU8Kq7sysydwx7Y0yaM5nlzILEAIiB2hvdGVsZXPgAQA!16s%2Fg%2F1v7tmpc2?entry=ttu&amp;g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+              <a href="https://www.google.es/maps/@40.5001309,-3.3368659,15z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3" target="_blank" rel="noopener noreferrer">Ver en la lista de Google Maps</a>
             </div>
           </article>
         </li>
@@ -178,21 +201,15 @@
             </div>
             <div class="accommodation-card-content">
               <h3>Parador de Alcalá de Henares</h3>
-              <a href="https://www.google.es/maps/place/Parador+de+Alcal%C3%A1+de+Henares/@40.4813525,-3.375399,15z/data=!4m13!1m2!2m1!1sHoteles!3m9!1s0xd4249145bff81fd:0x9425de981531411c!5m2!4m1!1i2!8m2!3d40.4813546!4d-3.361668!15sCgdIb3RlbGVzkgEFaG90ZWyqATwQASoLIgdob3RlbGVzKA4yHhABIhoBXoTJOxP2P7auU8Kq7sysydwx7Y0yaM5nlzILEAIiB2hvdGVsZXPgAQA!16s%2Fg%2F1tfvjhvr?entry=ttu&amp;g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+              <a href="https://www.google.es/maps/@40.4813546,-3.361668,15z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3" target="_blank" rel="noopener noreferrer">Ver en la lista de Google Maps</a>
             </div>
           </article>
         </li>
       </ul>
       <div class="accommodation-map">
-        <h3>Mapa de alojamientos y lugares de celebración</h3>
-        <iframe
-          title="Lista compartida de Google Maps: Boda María y Carlos"
-          src="https://www.google.es/maps/@40.516529,-3.3854624,13z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3?output=embed"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          allowfullscreen>
-        </iframe>
-        <a href="https://maps.app.goo.gl/agEz5ctzvqSFbx9P8" target="_blank" rel="noopener noreferrer">Abrir la lista completa en Google Maps</a>
+        <h3>Lista pública de Google Maps</h3>
+        <p>Google no permite incrustar esta lista guardada en la página. Ábrela para ver los 16 sitios y sus ubicaciones.</p>
+        <a href="https://maps.app.goo.gl/QDSnfQ4A5xLzRrfKA" target="_blank" rel="noopener noreferrer">Abrir la lista pública en Google Maps</a>
       </div>
     </section>
 
@@ -352,12 +369,11 @@
     </section>
 
     <section class="dress-code-section" aria-labelledby="dress-code-heading">
+      <span class="section-kicker">SUGERENCIAS DEL CÓDIGO DE VESTIMENTA</span>
+      <h2 id="dress-code-heading">Dress code</h2>
       <div class="dress-code">
         <img class="dress-code-illustration" src="./assets/dress-code-illustration.svg" alt="" aria-hidden="true">
-        <div>
-          <h3 id="dress-code-heading">Dress code</h3>
-          <p>Formal: hay que reservar energía para bailar. El blanco se lo dejamos a María (ese día tiene la exclusiva). ¿Deportivas? ¡En la fiesta, sí! Hasta entonces, al banquillo.</p>
-        </div>
+        <p>Formal: hay que reservar energía para bailar. El blanco se lo dejamos a María (ese día tiene la exclusiva). ¿Deportivas? ¡En la fiesta, sí! Hasta entonces, al banquillo.</p>
       </div>
     </section>
 
