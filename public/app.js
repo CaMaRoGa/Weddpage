@@ -574,6 +574,37 @@ form.addEventListener("submit", async (event) => {
 
 closeDialog.addEventListener("click", () => successDialog.close());
 
+document.querySelectorAll(".schedule-venue").forEach((card) => {
+  const front = card.querySelector(".venue-front");
+  const back = card.querySelector(".venue-back");
+  const backButton = back.querySelector(".venue-back-button");
+
+  card.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-venue-toggle]");
+    if (!toggle) return;
+
+    const isFlipped = !card.classList.contains("is-flipped");
+    card.classList.toggle("is-flipped", isFlipped);
+    front.setAttribute("aria-expanded", String(isFlipped));
+    front.setAttribute("aria-hidden", String(isFlipped));
+    back.setAttribute("aria-hidden", String(!isFlipped));
+
+    if (isFlipped) {
+      front.setAttribute("inert", "");
+      back.removeAttribute("inert");
+      const map = back.querySelector("iframe");
+      if (!map.hasAttribute("src")) map.src = map.dataset.mapSrc;
+      window.setTimeout(() => {
+        if (card.classList.contains("is-flipped")) backButton.focus();
+      }, 400);
+    } else {
+      front.removeAttribute("inert");
+      back.setAttribute("inert", "");
+      front.focus();
+    }
+  });
+});
+
 menuButton.addEventListener("click", () => {
   const open = mobileNav.classList.toggle("open");
   menuButton.setAttribute("aria-expanded", String(open));

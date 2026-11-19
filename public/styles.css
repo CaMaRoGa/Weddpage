@@ -861,6 +861,7 @@ textarea:focus,
 @media (prefers-reduced-motion: reduce) {
   #contacto .contact-card { transition: none; }
   #contacto .contact-card:hover { transform: none; }
+  .venue-flip { transition: none; }
 }
 
 .gift-section {
@@ -1065,48 +1066,93 @@ textarea:focus,
 
 #alojamiento .accommodation-map > a { color: #526247; }
 
+.wedding-schedule-wrap {
+  position: relative;
+  width: min(960px, 100%);
+  margin: 34px auto 0;
+  overflow-x: auto;
+  scrollbar-color: #718a3d rgba(113,138,61,.18);
+  scrollbar-width: thin;
+}
+
+.wedding-schedule-wrap::-webkit-scrollbar {
+  height: 8px;
+}
+
+.wedding-schedule-wrap::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(113,138,61,.18);
+}
+
+.wedding-schedule-wrap::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(113,138,61,.18);
+  border-radius: 999px;
+  background: #718a3d;
+}
+
+.wedding-schedule-wrap::-webkit-scrollbar-thumb:hover {
+  background: var(--vine-deep);
+}
+
+.schedule-connector {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  height: 96px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.schedule-connector path {
+  fill: none;
+  stroke: rgba(82,98,71,.48);
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
 .wedding-schedule {
   position: relative;
-  width: fit-content;
-  max-width: 100%;
-  margin: 34px auto 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  margin: 0;
   padding: 0;
   list-style: none;
-  text-align: left;
+  text-align: center;
 }
-
-.wedding-schedule::before {
-  content: "";
-  position: absolute;
-  top: 49px;
-  bottom: 49px;
-  left: 8px;
-  width: 1px;
-  background: rgba(242,213,165,.6);
-}
-
-#boda .wedding-schedule::before { background: rgba(82,98,71,.42); }
 
 .wedding-schedule li {
   position: relative;
-  display: grid;
-  grid-template-columns: 60px 100px max-content;
-  gap: 20px;
-  padding: 20px 0 20px 24px;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  padding: 135px 10px 12px;
+}
+
+.wedding-schedule li:nth-child(even) { padding-top: 0; }
+.wedding-schedule li:nth-child(even) time { order: 1; }
+.wedding-schedule li:nth-child(even) .wedding-celebration { order: 2; }
+.wedding-schedule li:nth-child(even) .schedule-icon {
+  order: 3;
+  margin: 7px 0 0;
 }
 
 .wedding-schedule li::before {
   content: "";
   position: absolute;
-  top: 45px;
-  left: 4px;
-  width: 8px;
-  height: 8px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%);
+  border: 2px solid var(--linen);
   border-radius: 50%;
-  background: #f2d5a5;
+  background: var(--vine-deep);
 }
 
-#boda .wedding-schedule li::before { background: var(--vine-deep); }
+.wedding-schedule li:nth-child(odd)::before { top: 103px; }
+.wedding-schedule li:nth-child(even)::before { top: 179px; }
 
 .wedding-schedule time {
   color: #f2d5a5;
@@ -1117,22 +1163,134 @@ textarea:focus,
 
 .schedule-icon {
   display: grid;
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 7px;
   place-items: center;
 }
 
 .schedule-icon svg {
-  width: 58px;
-  height: 58px;
+  width: 96px;
+  height: 96px;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke: #f2d5a5;
-  stroke-width: 1.8;
+  stroke-width: 1.6;
   filter: drop-shadow(0 2px 3px rgba(0,0,0,.2));
 }
 
 #boda .schedule-icon svg { stroke: var(--vine-deep); }
+#boda .schedule-icon .icon-accent { stroke: #b27878; }
+#boda .schedule-icon .icon-stone { stroke: #b79a71; }
+#boda .schedule-icon .icon-roof {
+  fill: #aeb4b1;
+  stroke: var(--vine-deep);
+}
+#boda .wedding-schedule li:first-child .schedule-icon { margin-bottom: 14px; }
+#boda .wedding-schedule li:first-child .schedule-icon svg { transform: scaleY(1.22); }
+#boda .schedule-icon .icon-food {
+  fill: #b46a4f;
+  stroke: #7b4636;
+}
+#boda .schedule-icon .icon-food-plate {
+  fill: #fffdf7;
+  stroke: #b79a71;
+}
+#boda .schedule-icon .icon-food-fat {
+  fill: #f3d9b6;
+  stroke: #8c5946;
+}
+#boda .schedule-icon .icon-food-sear {
+  fill: none;
+  stroke: #713e32;
+  stroke-width: 1.8;
+}
+#boda .schedule-icon .icon-vermouth {
+  fill: #9c263f;
+  stroke: #7a1f33;
+}
+#boda .schedule-icon .icon-olive {
+  fill: #718a3d;
+  stroke: #40572b;
+}
+#boda .schedule-icon .icon-olive-pimento {
+  fill: #d9b477;
+  stroke: #40572b;
+}
+#boda .schedule-icon .icon-wine {
+  fill: #793944;
+  stroke: #793944;
+}
+#boda .schedule-icon .icon-wine-label {
+  fill: #f2d5a5;
+  stroke: #b79a71;
+}
+#boda .schedule-icon .icon-vase {
+  fill: #efe4d3;
+  stroke: #b79a71;
+}
+#boda .schedule-icon .icon-carnation {
+  fill: #d98e86;
+  stroke: #b27878;
+}
+#boda .schedule-icon .icon-seafood {
+  fill: #e8c8c0;
+  stroke: #b27878;
+}
+#boda .schedule-icon .icon-dancer-skin {
+  fill: #efc5a7;
+  stroke: #9f675c;
+}
+#boda .schedule-icon .icon-dancer-limbs {
+  fill: none;
+  stroke: #efc5a7;
+  stroke-width: 3;
+}
+#boda .schedule-icon .icon-dancer-hair {
+  fill: #50343a;
+  stroke: #4d202a;
+}
+#boda .schedule-icon .icon-dancer-veil {
+  fill: #fffdf7;
+  stroke: #d9c9ad;
+}
+#boda .schedule-icon .icon-dancer-dress {
+  fill: #fffdf7;
+  stroke: #b79a71;
+}
+#boda .schedule-icon .icon-dancer-gown-fold {
+  fill: none;
+  stroke: #d9c9ad;
+}
+#boda .schedule-icon .icon-dancer-suit {
+  fill: #282429;
+  stroke: #4d202a;
+}
+#boda .schedule-icon .icon-dancer-shirt {
+  fill: #fffdf7;
+  stroke: #b79a71;
+}
+#boda .schedule-icon .icon-dancer-lapel {
+  fill: #3c3538;
+  stroke: #201c20;
+}
+#boda .schedule-icon .icon-dancer-bowtie {
+  fill: #282429;
+  stroke: #201c20;
+}
+#boda .schedule-icon .icon-dancer-pants {
+  fill: #282429;
+  stroke: #4d202a;
+}
+#boda .schedule-icon .icon-dancer-shoe {
+  fill: none;
+  stroke: #4d202a;
+  stroke-width: 2;
+}
+#boda .schedule-icon .icon-music {
+  fill: #d9b477;
+  stroke: #b27878;
+}
 
 .wedding-schedule li > span {
   font-family: var(--serif);
@@ -1206,53 +1364,143 @@ textarea:focus,
 
 .schedule-venues {
   position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
-  width: min(820px, 100%);
+  width: min(1000px, 100%);
   margin: 28px auto 0;
 }
 
-.schedule-venues::before {
-  content: "";
+.venue-outline {
   position: absolute;
-  top: 42px;
-  left: 26%;
-  right: 26%;
-  border-top: 1px dashed rgba(135,148,107,.78);
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.venue-outline path {
+  fill: none;
+  stroke: #718a3d;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
 }
 
 .schedule-venue {
   position: relative;
   z-index: 1;
+  color: #4d202a;
+  min-width: 0;
+  min-height: 320px;
+  perspective: 1300px;
+}
+
+.venue-flip {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 320px;
+  transform-style: preserve-3d;
+  transition: transform .75s cubic-bezier(.2,.7,.2,1);
+}
+
+.schedule-venue.is-flipped .venue-flip {
+  transform: rotateY(180deg);
+}
+
+.venue-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.venue-front {
   display: flex;
+  width: 100%;
+  min-height: 320px;
+  transition: visibility 0s linear .375s;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: 190px;
   gap: 10px;
-  padding: 16px 20px;
-  border: 1px solid rgba(135,148,107,.72);
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at 100% 0, rgba(135,148,107,.2), transparent 42%),
-    linear-gradient(145deg, #fff8f5, #f3e3df);
-  box-shadow: 0 12px 26px rgba(30,10,16,.18), inset 0 0 0 4px rgba(255,255,255,.35);
+  padding: 28px 42px;
+  border: 0;
+  border-radius: 48% 52% 39% 61% / 34% 42% 58% 66%;
+  background: radial-gradient(ellipse, rgba(255,248,245,.9) 0%, rgba(255,248,245,.7) 58%, transparent 78%);
   color: #4d202a;
+  font: inherit;
   text-align: center;
-  text-decoration: none;
-  transition: transform .18s ease, box-shadow .18s ease;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
-.schedule-venue:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 30px rgba(30,10,16,.23), inset 0 0 0 4px rgba(255,255,255,.35);
+.venue-front > * {
+  position: relative;
+  z-index: 1;
+}
+
+.venue-front:focus-visible {
+  outline: 2px solid #718a3d;
+  outline-offset: 3px;
+}
+
+.venue-back {
+  overflow: hidden;
+  border-radius: 28px;
+  background: #f3e3df;
+  transform: rotateY(180deg);
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s ease .375s, visibility 0s linear .375s;
+}
+
+.schedule-venue.is-flipped .venue-front {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.schedule-venue.is-flipped .venue-back {
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.venue-back iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.venue-back-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  padding: 8px 13px;
+  border: 1px solid rgba(82,98,71,.55);
+  border-radius: 999px;
+  background: #fff8f5;
+  color: #364237;
+  font: 600 11px var(--sans);
+  cursor: pointer;
+}
+
+.venue-back-button:focus-visible {
+  outline: 2px solid #718a3d;
+  outline-offset: 2px;
 }
 
 .venue-pin {
   display: grid;
-  width: 46px;
-  height: 46px;
+  width: 54px;
+  height: 54px;
   place-items: center;
   border: 1px solid var(--vine-light);
   border-radius: 50%;
@@ -1279,26 +1527,6 @@ textarea:focus,
 .schedule-venue strong {
   color: #4d202a;
   font: 500 23px/1.1 var(--serif);
-}
-
-.venue-action {
-  margin-top: auto;
-  padding-top: 6px;
-  color: var(--vine-deep);
-  font: 600 10px var(--sans);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.schedule-venue:hover .venue-action,
-.schedule-venue:focus-visible .venue-action {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.schedule-venue:focus-visible {
-  outline: 2px solid var(--vine-light);
-  outline-offset: 3px;
 }
 
 .mobile-menu-button,
@@ -1543,70 +1771,53 @@ textarea:focus,
   .schedule-venues {
     grid-template-columns: 1fr;
     gap: 12px;
-    max-width: 460px;
+    max-width: 500px;
   }
 
-  .schedule-venues::before {
-    top: 42px;
-    bottom: 42px;
-    left: 34px;
-    right: auto;
-    border-top: 0;
-    border-left: 1px dashed rgba(242,213,165,.72);
+  .schedule-venue,
+  .venue-flip,
+  .venue-front {
+    min-height: 240px;
   }
 
-  .schedule-venue {
-    display: grid;
-    grid-template-columns: 46px minmax(0, 1fr);
-    grid-template-areas:
-      "pin events"
-      "pin name"
-      "pin action";
-    justify-content: initial;
-    min-height: 104px;
-    gap: 4px 12px;
-    padding: 12px;
-    text-align: left;
+  .venue-front {
+    gap: 8px;
+    padding: 24px 28px;
+    border-radius: 35% 20% 30% 18% / 25% 35% 20% 26%;
   }
 
-  .venue-pin { grid-area: pin; }
-  .venue-events { grid-area: events; }
-  .schedule-venue strong { grid-area: name; }
-  .venue-action { grid-area: action; margin-top: 0; padding-top: 2px; }
+  .venue-pin {
+    width: 46px;
+    height: 46px;
+  }
 
   .wedding-schedule {
-    margin-top: 26px;
+    width: max(100%, 680px);
   }
 
-  .wedding-schedule li {
-    grid-template-columns: 50px 68px max-content;
-    gap: 12px;
-    padding-top: 18px;
-    padding-bottom: 18px;
+  .wedding-schedule-wrap {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
   }
 
-  .wedding-schedule::before {
-    top: 42px;
-    bottom: 42px;
-  }
-
-  .wedding-schedule li::before {
-    top: 38px;
+  .schedule-connector {
+    width: max(100%, 680px);
   }
 
   .schedule-icon {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
   }
 
   .schedule-icon svg {
-    width: 48px;
-    height: 48px;
+    width: 76px;
+    height: 76px;
   }
 
   .wedding-schedule time { font-size: 18px; }
 
   .wedding-schedule li > span { font-size: 21px; }
+  .wedding-schedule li:nth-child(even) time { margin-top: 24px; }
 
   .details-ornament {
     width: min(175px, 52vw);
