@@ -266,6 +266,11 @@ body::before {
   font-size: 17px;
 }
 
+.confirmation-heading .rsvp-deadline {
+  margin-top: 10px;
+  font: 600 14px/1.5 var(--sans);
+}
+
 .confirmation-heading .section-kicker {
   font-size: 12px;
   font-weight: 600;
