@@ -2,4 +2,5 @@
 .env.*
 !.env.example
 /node_modules/
+data/rsvps.json
 public/assets/*.mp3

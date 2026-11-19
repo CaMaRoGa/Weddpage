@@ -560,8 +560,6 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (!response.ok) throw new Error(data.error || "No se pudo enviar");
-
-    stopAudio();
     successDialog.showModal();
   } catch (error) {
     console.error(error);
