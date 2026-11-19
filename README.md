@@ -13,6 +13,7 @@ Proyecto completo para la web de boda del boceto proporcionado.
 - Buscador real de canciones.
 - Resultados con portada, título y artista.
 - Enlace para abrir cada canción en Spotify.
+- Enlace para abrir cada canción en Spotify.
 - Botón + para añadir una canción.
 - Lista de canciones seleccionadas.
 - Límite de 10 canciones por invitado.
@@ -53,7 +54,7 @@ data/rsvps.json
 Para una boda real conviene sustituir este almacenamiento por una base de datos
 (PostgreSQL, MySQL, Supabase, Firebase, etc.) y proteger un panel de administración.
 
-## Música del inicio
+## Buscador musical
 
 La canción «Si Antes Te Hubiera Conocido» de KAROL G se reproduce desde el MP3
 local, sin mostrar un reproductor en la página. La web intenta iniciarla al
@@ -61,12 +62,16 @@ cargarse y el botón de la esquina superior derecha permite detenerla o volver a
 activarla. Algunos navegadores bloquean la reproducción automática con sonido;
 en ese caso, pulsa «Activar música».
 
-## Buscador musical de Spotify
+- título
+- artista
+- álbum
+- carátula
+- URL de la previsualización, cuando existe
+- URL de la canción en la tienda
 
 El backend consulta la Spotify Web API desde `/api/songs` y devuelve título,
 artista, álbum, carátula y enlace a Spotify. El botón de play carga el
 reproductor oficial integrado dentro de la página; desde ahí se puede escuchar
-la canción sin abrir otra ventana y luego añadirla a la lista.
 
 El servidor usa el flujo Client Credentials. Crea una aplicación en
 [Spotify for Developers](https://developer.spotify.com/dashboard), copia
@@ -88,8 +93,6 @@ No pongas el secreto en `public/`, en el navegador ni en el repositorio. Si
 faltan credenciales, el buscador informa que Spotify no está configurado.
 Abre la web desde `http://localhost:3000` con el servidor en marcha; abrir
 `public/index.html` directamente no permite al buscador llamar a `/api/songs`.
-
-
 ## Personalización rápida
 
 Los textos principales están en:
@@ -121,3 +124,9 @@ Para publicar:
 3. Arranca con `npm start`.
 4. Configura un dominio y HTTPS.
 5. Sustituye `data/rsvps.json` por una base de datos si habrá muchos invitados.
+
+## Importante sobre las previsualizaciones
+
+El proyecto usa el iTunes Search API porque sus resultados de canciones pueden incluir
+`previewUrl`, una previsualización de 30 segundos cuando está disponible. Apple indica
+que el contenido promocional de su API tiene condiciones específicas de uso y atribución.
