@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f6f2">
+  <meta name="theme-color" content="#5a1f2b">
   <meta name="description" content="María y Carlos — 18.09.2027">
   <title>María y Carlos · 18.09.2027</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,18 +13,25 @@
 </head>
 
 <body>
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="Activar música" aria-pressed="false">Activar música</button>
+  <audio
+    id="backgroundAudio"
+    src="./assets/KAROL G - Si Antes Te Hubiera Conocido  Coke Studio - KarolGVEVO.mp3"
+    preload="auto"
+    loop
+    aria-hidden="true">
+  </audio>
+
   <header class="site-header">
-    <a class="brand-mini" href="#inicio" aria-label="Inicio">
-      <img src="./assets/ambigram.png" alt="M y C">
-    </a>
 
     <nav class="desktop-nav" aria-label="Navegación principal">
       <a href="#inicio">INICIO</a>
       <a href="#boda">LA BODA</a>
-      <a href="#confirmacion">CONFIRMACIÓN</a>
-      <span class="nav-spacer"></span>
       <a href="#detalles">DETALLES</a>
+      <a href="#alojamiento">ALOJAMIENTO</a>
+      <a href="#confirmacion">CONFIRMACIÓN</a>
       <a href="#contacto">CONTACTO</a>
+      <a href="#regalos">REGALOS</a>
     </nav>
 
     <button class="mobile-menu-button" id="menuButton" aria-label="Abrir menú" aria-expanded="false">
@@ -34,9 +41,11 @@
     <nav class="mobile-nav" id="mobileNav" aria-label="Menú móvil">
       <a href="#inicio">INICIO</a>
       <a href="#boda">LA BODA</a>
-      <a href="#confirmacion">CONFIRMACIÓN</a>
       <a href="#detalles">DETALLES</a>
+      <a href="#alojamiento">ALOJAMIENTO</a>
+      <a href="#confirmacion">CONFIRMACIÓN</a>
       <a href="#contacto">CONTACTO</a>
+      <a href="#regalos">REGALOS</a>
     </nav>
   </header>
 
@@ -51,84 +60,288 @@
         Nos hace mucha ilusión compartir este día tan especial con vosotros.<br>
         Por favor, confirma tu asistencia antes del 30 de junio de 2027.
       </p>
-      <img class="leaf" src="./assets/leaf.svg" alt="" aria-hidden="true">
+      <div class="countdown" id="weddingCountdown" role="timer" aria-label="Cuenta atrás para el 18 de septiembre de 2027, según la zona horaria de Madrid">
+        <p class="countdown-caption">Faltan</p>
+        <div class="countdown-units">
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-days>000</span><span class="countdown-name">Días</span></div>
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-hours>00</span><span class="countdown-name">Horas</span></div>
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-minutes>00</span><span class="countdown-name">Minutos</span></div>
+          <div class="countdown-unit"><span class="countdown-value" data-countdown-seconds>00</span><span class="countdown-name">Segundos</span></div>
+        </div>
+        <p class="countdown-message" hidden></p>
+      </div>
+      <img class="hero-ornament" src="./assets/hero-ornament.svg" alt="" aria-hidden="true">
+    </section>
+
+    <section class="simple-section" id="boda">
+      <span class="section-kicker">18 · 09 · 2027</span>
+      <h2>Un día para recordar</h2>
+      <div class="schedule-venues" aria-label="Ubicaciones de la celebración">
+        <a class="schedule-venue" href="https://www.google.com/maps/search/?api=1&amp;query=Iglesia+Nuestra+Se%C3%B1ora+de+la+Asunci%C3%B3n+de+Meco" target="_blank" rel="noopener noreferrer">
+          <span class="venue-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </span>
+          <span class="venue-events">La ceremonia</span>
+          <strong>Iglesia Nuestra Señora de la Asunción de Meco</strong>
+          <span class="venue-action">Ver ubicación</span>
+        </a>
+        <a class="schedule-venue" href="https://www.google.com/maps/search/?api=1&amp;query=La+Vega+del+Henares+Meco" target="_blank" rel="noopener noreferrer">
+          <span class="venue-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13a8 8 0 1 0-16 0c0 5.8 8 13 8 13Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </span>
+          <span class="venue-events">Cóctel · convite · fiesta</span>
+          <strong>La Vega del Henares</strong>
+          <span class="venue-action">Ver ubicación</span>
+        </a>
+      </div>
+      <ol class="wedding-schedule">
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M32 4v12m-5-8h10"/>
+              <path d="M10 56h44M15 29h34v27M11 29l21-12 21 12"/>
+              <path d="M25 56V43a7 7 0 0 1 14 0v13"/>
+              <circle cx="32" cy="33" r="3"/>
+              <path d="M8 60h48"/>
+              <path d="M20 35h5m14 0h5" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="12:30">12:30</time>
+          <span class="wedding-celebration">Ceremonia</span>
+        </li>
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M17 11h30L32 31v18m-9 0h18m-22 5h26"/>
+              <path d="M32 30v5m4-24 13-7m-17 7-5-7"/>
+              <path d="M20 16h24"/>
+              <circle cx="25" cy="21" r="1.5" fill="#E8BDC4" stroke="#E8BDC4"/>
+              <circle cx="39" cy="24" r="1.5" fill="#E8BDC4" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="14:00">14:00</time>
+          <span class="wedding-celebration">Cóctel</span>
+        </li>
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M8 33h48l-4 8H12l-4-8Z"/>
+              <path d="M15 41 12 57m37-16 3 16M12 52h40"/>
+              <path d="M7 15v15m-3-15v5a3 3 0 0 0 6 0v-5M57 15v15m0-15-3 9h6"/>
+              <ellipse cx="32" cy="27" rx="11" ry="3.5"/>
+              <path d="M24 27c2-4 5-6 8-6s6 2 8 6m-12-1 3-3 3 3 3-2"/>
+              <circle cx="14" cy="29" r="5"/>
+              <circle cx="50" cy="29" r="5"/>
+              <path d="M12 29h4m32 0h4" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="15:30">15:30</time>
+          <span class="wedding-celebration">Convite</span>
+        </li>
+        <li>
+          <span class="schedule-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M24 13v29a7 7 0 1 1-4-6V20l25-6v28a7 7 0 1 1-4-6V9"/>
+              <circle cx="12" cy="44" r="2" fill="#E8BDC4" stroke="#E8BDC4"/>
+              <circle cx="53" cy="32" r="2" fill="#E8BDC4" stroke="#E8BDC4"/>
+              <path d="m32 4 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5L30.5 8 32 4Zm20 35 1.2 3.2 3.3 1.3-3.3 1.2-1.2 3.3-1.3-3.3-3.2-1.2 3.2-1.3L52 39Z" fill="#E8BDC4" stroke="#E8BDC4"/>
+            </svg>
+          </span>
+          <time datetime="17:00">17:00</time>
+          <span class="wedding-celebration">¡Fiesta!</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="simple-section" id="detalles">
+      <span class="section-kicker">DETALLES</span>
+      <h2>Próximamente</h2>
+      <img class="details-ornament" src="./assets/details-wedding-car.png" alt="" aria-hidden="true">
+      <p>El horario del transporte, el lugar de celebración de la preboda y toda la información que necesitaréis para acompañarnos.</p>
+    </section>
+
+    <section class="simple-section" id="alojamiento">
+      <span class="section-kicker">ALOJAMIENTO</span>
+      <h2>Nuestras recomendaciones de alojamiento en Alcalá de Henares</h2>
+      <p>Algunas opciones de alojamiento en Alcalá de Henares:</p>
+      <ul class="accommodation-list">
+        <li>
+          <article class="accommodation-card">
+            <div class="accommodation-image">
+              <img src="./assets/hotel-placeholder.svg" alt="" aria-hidden="true">
+              <span>Imagen provisional</span>
+            </div>
+            <div class="accommodation-card-content">
+              <h3>Hotel Alcalá Plaza</h3>
+              <a href="https://www.google.es/maps/@40.5003075,-3.3353119,15z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3" target="_blank" rel="noopener noreferrer">Ver en la lista de Google Maps</a>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="accommodation-card">
+            <div class="accommodation-image">
+              <img src="./assets/hotel-placeholder.svg" alt="" aria-hidden="true">
+              <span>Imagen provisional</span>
+            </div>
+            <div class="accommodation-card-content">
+              <h3>ibis budget Madrid Alcalá de Henares La Dehesa</h3>
+              <a href="https://www.google.es/maps/@40.5001309,-3.3368659,15z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3" target="_blank" rel="noopener noreferrer">Ver en la lista de Google Maps</a>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="accommodation-card">
+            <div class="accommodation-image">
+              <img src="./assets/hotel-placeholder.svg" alt="" aria-hidden="true">
+              <span>Imagen provisional</span>
+            </div>
+            <div class="accommodation-card-content">
+              <h3>Parador de Alcalá de Henares</h3>
+              <a href="https://www.google.es/maps/@40.4813546,-3.361668,15z/data=!4m3!11m2!2sTfHx03Vpgdn2g_ZahXoH4g!3e3" target="_blank" rel="noopener noreferrer">Ver en la lista de Google Maps</a>
+            </div>
+          </article>
+        </li>
+      </ul>
+      <div class="accommodation-map">
+        <h3>Lista pública de Google Maps</h3>
+        <p>Google no permite incrustar esta lista guardada en la página. Ábrela para ver los 16 sitios y sus ubicaciones.</p>
+        <a href="https://maps.app.goo.gl/QDSnfQ4A5xLzRrfKA" target="_blank" rel="noopener noreferrer">Abrir la lista pública en Google Maps</a>
+      </div>
     </section>
 
     <section class="content-section" id="confirmacion">
+      <div class="confirmation-heading">
+        <span class="section-kicker">CONFIRMACIÓN</span>
+        <h2>Confirma tu asistencia</h2>
+        <p>Déjanos tus datos y preferencias para ayudarnos a organizar la celebración. Responde a las preguntas que correspondan a tu caso.</p>
+      </div>
       <form id="rsvpForm" class="rsvp-card" novalidate>
-        <div class="form-column">
-          <div class="question">
-            <label>1. ¿Nos acompañas?</label>
-            <div class="choice-row">
-              <label class="choice active">
-                <input type="radio" name="attending" value="yes" checked>
-                <span class="radio"></span> Sí
-              </label>
-              <label class="choice">
-                <input type="radio" name="attending" value="no">
-                <span class="radio"></span> No
-              </label>
-            </div>
+        <div class="question attending-question">
+          <label>1. ¿Nos acompañas?</label>
+          <div class="choice-row">
+            <label class="choice active">
+              <input type="radio" name="attending" value="yes" checked>
+              <span class="radio"></span> Sí
+            </label>
+            <label class="choice">
+              <input type="radio" name="attending" value="no">
+              <span class="radio"></span> No
+            </label>
           </div>
+        </div>
 
-          <div class="question">
-            <label for="name">2. Nombre y apellidos</label>
-            <input id="name" name="name" type="text" autocomplete="name" placeholder="Escribe tu nombre completo" required>
+        <div class="question prewedding-question">
+          <label>2. ¿Te gustaría venir a nuestra preboda en Madrid?</label>
+          <div class="choice-row">
+            <label class="choice active">
+              <input type="radio" name="prewedding" value="yes" checked>
+              <span class="radio"></span> Sí
+            </label>
+            <label class="choice">
+              <input type="radio" name="prewedding" value="no">
+              <span class="radio"></span> No
+            </label>
           </div>
-
-          <div class="question">
-            <label for="guests">3. Número de acompañantes</label>
-            <select id="guests" name="guests">
+          <div class="prewedding-details" id="preweddingDetails" hidden>
+            <label for="preweddingCount">¿Cuántas personas vendríais en total a la preboda, incluyéndote?</label>
+            <select id="preweddingCount" name="preweddingCount" disabled>
+              <option value="">Selecciona el número de personas</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
               <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
             </select>
+          </div>
+        </div>
+
+        <div class="question decline-name" id="preweddingNameField" hidden>
+          <label for="preweddingName">3. Nombre y apellidos</label>
+          <input id="preweddingName" type="text" autocomplete="name" placeholder="Escribe tu nombre completo" disabled>
+        </div>
+
+        <div class="form-column attendee-fields" id="attendeeFieldsLeft">
+          <div class="question">
+            <label for="name">3. Nombre y apellidos</label>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Escribe tu nombre completo" required>
           </div>
 
           <div class="question">
             <label for="allergies">4. Alergias o intolerancias</label>
-            <textarea id="allergies" name="allergies" rows="4" placeholder="Indica cualquier alergia o intolerancia alimentaria..."></textarea>
+            <textarea id="allergies" name="allergies" rows="3" placeholder="Indica cualquier alergia o intolerancia alimentaria..."></textarea>
             <label class="checkline">
               <input id="noneAllergies" type="checkbox">
               <span class="box"></span> Ninguna
             </label>
           </div>
+
+          <div class="question">
+            <label for="guests">5. Número de acompañantes</label>
+            <select id="guests" name="guests">
+              <option value="0" selected>0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <div id="companionFields"></div>
+          </div>
+
         </div>
 
-        <div class="form-column form-column-right">
+        <div class="form-column form-column-right attendee-fields" id="attendeeFieldsRight">
           <div class="question">
-            <label>5. ¿Usarás el autocar?</label>
+            <label>6. ¿Usarás el autocar?</label>
             <div class="choice-row">
-              <label class="choice active">
-                <input type="radio" name="bus" value="yes" checked>
+              <label class="choice">
+                <input type="radio" name="bus" value="yes">
                 <span class="radio"></span> Sí
               </label>
-              <label class="choice">
-                <input type="radio" name="bus" value="no">
+              <label class="choice active">
+                <input type="radio" name="bus" value="no" checked>
                 <span class="radio"></span> No
               </label>
+            </div>
+            <div class="bus-details" id="busDetails">
+              <p class="bus-trip">Ida</p>
+              <label for="busPickup">¿Dónde subirás?</label>
+              <select id="busPickup" name="busPickup" required>
+                <option value="">Selecciona una parada</option>
+                <option value="Madrid">Madrid</option>
+                <option value="Alcalá de Henares">Alcalá de Henares</option>
+                <option value="Meco">Meco</option>
+                <option value="No usaré esta opción">No usaré esta opción</option>
+              </select>
+
+              <p class="bus-trip">Vuelta</p>
+              <label for="busDropoff">¿Dónde bajarás?</label>
+              <select id="busDropoff" name="busDropoff" required>
+                <option value="">Selecciona una parada</option>
+                <option value="Alcalá de Henares">Alcalá de Henares</option>
+                <option value="Madrid">Madrid</option>
+                <option value="No usaré esta opción">No usaré esta opción</option>
+              </select>
             </div>
           </div>
 
           <div class="question songs-question">
-            <label for="songSearch">6. ¿Qué canciones te gustaría escuchar?</label>
+            <label for="songSearch">7. ¿Qué canciones te gustaría escuchar?</label>
 
             <div class="song-search">
               <span class="search-icon" aria-hidden="true">⌕</span>
-              <input id="songSearch" type="search" placeholder="Buscar canción o artista..." autocomplete="off">
+              <input id="songSearch" type="search" placeholder="Buscar canción o artista en Spotify..." autocomplete="off">
               <button type="button" id="clearSearch" class="clear-search" aria-label="Borrar búsqueda">×</button>
             </div>
 
-            <div class="search-heading">Resultados de búsqueda</div>
+            <div class="search-heading">Resultados de Spotify</div>
             <div id="songResults" class="song-results">
               <div class="empty-search">Empieza a escribir para buscar una canción.</div>
+            </div>
+            <div id="spotifyPreview" class="spotify-preview" aria-live="polite" hidden>
+              <p id="spotifyPreviewStatus" class="spotify-preview-status" hidden></p>
+              <div id="spotifyPreviewMount"></div>
             </div>
 
             <div class="selected-heading">
@@ -141,11 +354,12 @@
             </div>
           </div>
 
-          <button class="submit-button" type="submit">
-            <span>ENVIAR CONFIRMACIÓN</span>
-            <span>→</span>
-          </button>
         </div>
+
+        <button class="submit-button" type="submit">
+          <span>ENVIAR CONFIRMACIÓN</span>
+          <span>→</span>
+        </button>
 
         <div class="privacy-note">
           <span aria-hidden="true">♙</span>
@@ -154,23 +368,66 @@
       </form>
     </section>
 
-    <section class="simple-section" id="boda">
-      <span class="section-kicker">18 · 09 · 2027</span>
-      <h2>Un día para recordar</h2>
-      <p>Muy pronto compartiremos aquí todos los detalles de la celebración.</p>
-    </section>
-
-    <section class="simple-section" id="detalles">
-      <span class="section-kicker">DETALLES</span>
-      <h2>Próximamente</h2>
-      <p>Horario, lugar, transporte y toda la información que necesitaréis para acompañarnos.</p>
+    <section class="dress-code-section" aria-labelledby="dress-code-heading">
+      <span class="section-kicker">SUGERENCIAS DEL CÓDIGO DE VESTIMENTA</span>
+      <h2 id="dress-code-heading">Dress code</h2>
+      <div class="dress-code">
+        <img class="dress-code-illustration" src="./assets/dress-code-illustration.svg" alt="" aria-hidden="true">
+        <p>Formal: hay que reservar energía para bailar. El blanco se lo dejamos a María (ese día tiene la exclusiva). ¿Deportivas? ¡En la fiesta, sí! Hasta entonces, al banquillo.</p>
+      </div>
     </section>
 
     <section class="simple-section" id="contacto">
       <span class="section-kicker">CONTACTO</span>
       <h2>¿Tienes alguna pregunta?</h2>
-      <p>Puedes añadir aquí el teléfono, correo electrónico o WhatsApp de contacto.</p>
+      <img class="contact-ornament" src="./assets/contact-ornament.svg" alt="" aria-hidden="true">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <svg class="contact-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M16 8 10 11c-2 1-2 4-1 7 3 10 11 18 21 21 3 1 6 1 7-1l3-6-9-6-4 5c-5-2-9-6-11-11l5-4-5-8Z"/>
+            <path d="M29 9a11 11 0 0 1 10 10M29 14a6 6 0 0 1 5 5"/>
+            <path d="m13 34-3 3m25-4 3 3"/>
+          </svg>
+          <span class="contact-label">María</span>
+          <p>615 974 990</p>
+        </div>
+        <div class="contact-card">
+          <svg class="contact-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M16 8 10 11c-2 1-2 4-1 7 3 10 11 18 21 21 3 1 6 1 7-1l3-6-9-6-4 5c-5-2-9-6-11-11l5-4-5-8Z"/>
+            <path d="M29 9a11 11 0 0 1 10 10M29 14a6 6 0 0 1 5 5"/>
+            <path d="m13 34-3 3m25-4 3 3"/>
+          </svg>
+          <span class="contact-label">Carlos</span>
+          <p>645 606 752</p>
+        </div>
+        <div class="contact-card">
+          <svg class="contact-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M7 13h34v23H7z"/>
+            <path d="m8 15 16 13 16-13"/>
+            <path d="m8 35 12-10m20 10L28 25"/>
+            <path d="M24 7c2 2.5 3 4 3 5.5a3 3 0 0 1-6 0C21 11 22 9.5 24 7Z"/>
+          </svg>
+          <span class="contact-label">Correo:</span>
+          <p>familiarodgall@gmail.com</p>
+        </div>
+      </div>
     </section>
+
+    <section class="simple-section gift-section" id="regalos">
+      <span class="section-kicker">REGALOS</span>
+      <h2>Vuestra presencia ya es un regalazo</h2>
+      <img class="gift-ornament" src="./assets/gift-driving.svg" alt="" aria-hidden="true">
+      <div class="gift-card">
+        <p class="gift-intro">Si queréis hacernos un regalo, aquí va una idea:</p>
+        <h3>Operación: Carnet para María</h3>
+        <p class="gift-copy">María aún no tiene carnet. Vuestros regalos irán a sus <span class="gift-highlight">clases, prácticas y examen</span>. ¡Los conos de la autoescuela ya están avisados!</p>
+        <div class="gift-account">
+          <span>Cuenta provisional del fondo «Rumbo a la autoescuela»</span>
+          <strong>XXXXXXXXXXXXXXXXXX</strong>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
