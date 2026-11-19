@@ -1,18 +1,30 @@
 import express from "express";
+import dotenv from "dotenv";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, "data");
 const RSVP_FILE = path.join(DATA_DIR, "rsvps.json");
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+
+if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
+  console.warn("Spotify no está configurado. Copia .env.example a .env, añade las credenciales y reinicia el servidor.");
+}
 
 app.use(express.json({ limit: "100kb" }));
 app.use(express.static(path.join(__dirname, "public")));
+
+let spotifyToken = null;
+let spotifyTokenExpiresAt = 0;
+let spotifyTokenRequest = null;
 
 async function readRsvps() {
   try {
@@ -28,9 +40,44 @@ async function writeRsvps(items) {
   await fs.writeFile(RSVP_FILE, JSON.stringify(items, null, 2), "utf8");
 }
 
-// Buscador de canciones: proxy para no exponer/depender de llamadas cross-origin
-// desde el navegador. Apple devuelve metadatos y previewUrl para canciones
-// cuando hay una previsualización disponible.
+async function getSpotifyAccessToken() {
+  if (spotifyToken && Date.now() < spotifyTokenExpiresAt) {
+    return spotifyToken;
+  }
+
+  if (spotifyTokenRequest) {
+    return spotifyTokenRequest;
+  }
+
+  spotifyTokenRequest = (async () => {
+    const credentials = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString("base64");
+    const response = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({ grant_type: "client_credentials" })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Spotify token respondió ${response.status}`);
+    }
+
+    const data = await response.json();
+    spotifyToken = data.access_token;
+    spotifyTokenExpiresAt = Date.now() + Math.max(0, data.expires_in - 60) * 1000;
+    return spotifyToken;
+  })();
+
+  try {
+    return await spotifyTokenRequest;
+  } finally {
+    spotifyTokenRequest = null;
+  }
+}
+
+// El secreto de Spotify solo se usa en el servidor; el navegador recibe metadatos y enlaces.
 app.get("/api/songs", async (req, res) => {
   const term = String(req.query.term || "").trim();
 
@@ -42,32 +89,39 @@ app.get("/api/songs", async (req, res) => {
     return res.status(400).json({ error: "La búsqueda es demasiado larga." });
   }
 
-  try {
-    const url = new URL("https://itunes.apple.com/search");
-    url.searchParams.set("term", term);
-    url.searchParams.set("country", "ES");
-    url.searchParams.set("media", "music");
-    url.searchParams.set("entity", "song");
-    url.searchParams.set("limit", "8");
-    url.searchParams.set("lang", "es_es");
+  if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
+    return res.status(503).json({
+      error: "Faltan las credenciales de Spotify. Configúralas en el archivo .env y reinicia el servidor."
+    });
+  }
 
-    const response = await fetch(url);
+  try {
+    const accessToken = await getSpotifyAccessToken();
+    const url = new URL("https://api.spotify.com/v1/search");
+    url.searchParams.set("q", term);
+    url.searchParams.set("type", "track");
+    url.searchParams.set("market", "ES");
+    url.searchParams.set("limit", "8");
+
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
 
     if (!response.ok) {
-      throw new Error(`iTunes respondió ${response.status}`);
+      throw new Error(`Spotify respondió ${response.status}`);
     }
 
     const data = await response.json();
-
-    const results = (data.results || []).map((song) => ({
-      id: song.trackId,
-      title: song.trackName,
-      artist: song.artistName,
-      album: song.collectionName || "",
-      artwork: song.artworkUrl100 || song.artworkUrl60 || "",
-      previewUrl: song.previewUrl || null,
-      storeUrl: song.trackViewUrl || song.collectionViewUrl || ""
-    }));
+    const results = (data.tracks?.items || [])
+      .filter((track) => track.id)
+      .map((track) => ({
+        id: track.id,
+        title: track.name,
+        artist: track.artists.map((artist) => artist.name).join(", "),
+        album: track.album?.name || "",
+        artwork: track.album?.images?.[0]?.url || "",
+        spotifyUrl: `https://open.spotify.com/track/${encodeURIComponent(track.id)}`
+      }));
 
     res.json({ results });
   } catch (error) {
@@ -86,24 +140,58 @@ app.post("/api/rsvp", async (req, res) => {
   const guests = Number(body.guests || 0);
   const allergies = String(body.allergies || "").trim();
   const bus = body.bus === true;
+  const busPickup = String(body.busPickup || "").trim();
+  const busDropoff = String(body.busDropoff || "").trim();
+  const prewedding = body.prewedding === true;
+  const preweddingGuests = Number(body.preweddingGuests || 0);
+  const companions = Array.isArray(body.companions) ? body.companions : [];
   const songs = Array.isArray(body.songs) ? body.songs.slice(0, 10) : [];
 
-  if (attending && !name) {
+  if (!name) {
     return res.status(400).json({ error: "Indica tu nombre y apellidos." });
   }
 
-  if (attending && (!Number.isInteger(guests) || guests < 1 || guests > 10)) {
-    return res.status(400).json({ error: "El número de acompañantes no es válido." });
+  if (attending && (!Number.isInteger(guests) || guests < 0 || guests > 5)) {
+    return res.status(400).json({ error: "El número de acompañantes debe estar entre 0 y 5." });
+  }
+
+  if (attending && companions.length !== guests) {
+    return res.status(400).json({ error: "Los datos de los acompañantes no coinciden con el número indicado." });
+  }
+
+  if (attending && companions.some((companion) => !String(companion?.name || "").trim())) {
+    return res.status(400).json({ error: "Indica el nombre y apellidos de cada acompañante." });
+  }
+
+  if (prewedding && (!Number.isInteger(preweddingGuests) || preweddingGuests < 1 || preweddingGuests > 6)) {
+    return res.status(400).json({ error: "El número de personas de la preboda no es válido." });
+  }
+
+  if (attending && bus && !["Madrid", "Alcalá de Henares", "Meco", "No usaré esta opción"].includes(busPickup)) {
+    return res.status(400).json({ error: "Selecciona dónde subirás al autocar para la ida." });
+  }
+
+  if (attending && bus && !["Alcalá de Henares", "Madrid", "No usaré esta opción"].includes(busDropoff)) {
+    return res.status(400).json({ error: "Selecciona dónde bajarás del autocar en la vuelta." });
   }
 
   const entry = {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
     attending,
-    name: attending ? name : "",
+    name,
     guests: attending ? guests : 0,
     allergies: attending ? allergies : "",
     bus: attending ? bus : false,
+    busTrip: attending && bus ? "ida y vuelta" : "",
+    busPickup: attending && bus ? busPickup : "",
+    busDropoff: attending && bus ? busDropoff : "",
+    prewedding,
+    preweddingGuests: prewedding ? preweddingGuests : 0,
+    companions: attending ? companions.map((companion) => ({
+      name: String(companion.name).trim(),
+      allergies: String(companion.allergies || "").trim()
+    })) : [],
     songs: attending ? songs : []
   };
 
@@ -118,6 +206,6 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Boda María y Carlos: http://localhost:${PORT}`);
 });

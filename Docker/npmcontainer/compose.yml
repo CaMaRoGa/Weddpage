@@ -1,10 +1,12 @@
 version: "3.8"
 services:
-  npm:
+  weddpage:
     build:
       context: ../..
       dockerfile: Docker/npmcontainer/Dockerfile
     container_name: server_container
+    env_file:
+      - ../../.env
     volumes:
       - ../../data/rsvps.json:/app/data/rsvps.json
     ports:

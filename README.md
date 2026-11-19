@@ -12,7 +12,7 @@ Proyecto completo para la web de boda del boceto proporcionado.
 - Autocar.
 - Buscador real de canciones.
 - Resultados con portada, título y artista.
-- Botón ▶ para reproducir la previsualización.
+- Enlace para abrir cada canción en Spotify.
 - Botón + para añadir una canción.
 - Lista de canciones seleccionadas.
 - Límite de 10 canciones por invitado.
@@ -53,22 +53,42 @@ data/rsvps.json
 Para una boda real conviene sustituir este almacenamiento por una base de datos
 (PostgreSQL, MySQL, Supabase, Firebase, etc.) y proteger un panel de administración.
 
-## Buscador musical
+## Música del inicio
 
-El backend consulta el iTunes Search API desde `/api/songs` y devuelve:
+La canción «Si Antes Te Hubiera Conocido» de KAROL G se reproduce desde el MP3
+local, sin mostrar un reproductor en la página. La web intenta iniciarla al
+cargarse y el botón de la esquina superior derecha permite detenerla o volver a
+activarla. Algunos navegadores bloquean la reproducción automática con sonido;
+en ese caso, pulsa «Activar música».
 
-- título
-- artista
-- álbum
-- carátula
-- URL de la previsualización, cuando existe
-- URL de la canción en la tienda
+## Buscador musical de Spotify
 
-La previsualización se reproduce mediante el elemento de audio del navegador y no se
-descarga ni se almacena.
+El backend consulta la Spotify Web API desde `/api/songs` y devuelve título,
+artista, álbum, carátula y enlace a Spotify. El botón de play carga el
+reproductor oficial integrado dentro de la página; desde ahí se puede escuchar
+la canción sin abrir otra ventana y luego añadirla a la lista.
 
-Antes de publicar el buscador en una web pública, revisa las condiciones de uso y
-atribución de Apple/iTunes aplicables a las previsualizaciones y carátulas.
+El servidor usa el flujo Client Credentials. Crea una aplicación en
+[Spotify for Developers](https://developer.spotify.com/dashboard), copia
+[.env.example](./.env.example) como `.env` en la carpeta del proyecto y completa
+el Client ID y el Client Secret:
+
+```env
+SPOTIFY_CLIENT_ID=tu-client-id
+SPOTIFY_CLIENT_SECRET=tu-client-secret
+```
+
+Después reinicia el servidor con `npm start`. El servidor carga `.env`
+automáticamente. Si la página sigue mostrando un error, revisa la terminal del
+servidor: puede indicar credenciales incorrectas o un problema de conexión con
+Spotify.
+
+En producción, añade esas variables a la configuración segura del servicio.
+No pongas el secreto en `public/`, en el navegador ni en el repositorio. Si
+faltan credenciales, el buscador informa que Spotify no está configurado.
+Abre la web desde `http://localhost:3000` con el servidor en marcha; abrir
+`public/index.html` directamente no permite al buscador llamar a `/api/songs`.
+
 
 ## Personalización rápida
 
@@ -101,9 +121,3 @@ Para publicar:
 3. Arranca con `npm start`.
 4. Configura un dominio y HTTPS.
 5. Sustituye `data/rsvps.json` por una base de datos si habrá muchos invitados.
-
-## Importante sobre las previsualizaciones
-
-El proyecto usa el iTunes Search API porque sus resultados de canciones pueden incluir
-`previewUrl`, una previsualización de 30 segundos cuando está disponible. Apple indica
-que el contenido promocional de su API tiene condiciones específicas de uso y atribución.
