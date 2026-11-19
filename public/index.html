@@ -14,6 +14,13 @@
 
 <body>
   <button class="music-toggle" id="musicToggle" type="button" aria-label="Activar música" aria-pressed="false">Activar música</button>
+  <audio
+    id="backgroundAudio"
+    src="./assets/KAROL G - Si Antes Te Hubiera Conocido  Coke Studio - KarolGVEVO.mp3"
+    preload="auto"
+    loop
+    aria-hidden="true">
+  </audio>
 
   <header class="site-header">
 
@@ -62,17 +69,6 @@
           <div class="countdown-unit"><span class="countdown-value" data-countdown-seconds>00</span><span class="countdown-name">Segundos</span></div>
         </div>
         <p class="countdown-message" hidden></p>
-      </div>
-      <div class="music-player" aria-hidden="true">
-        <iframe
-          id="youtubeMusicPlayer"
-          src="https://www.youtube-nocookie.com/embed/QCZZwZQ4qNs?enablejsapi=1&amp;loop=1&amp;playlist=QCZZwZQ4qNs&amp;playsinline=1&amp;rel=0"
-          title="Nuestra canción en YouTube"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          referrerpolicy="strict-origin-when-cross-origin"
-          tabindex="-1"
-          allowfullscreen>
-        </iframe>
       </div>
       <img class="hero-ornament" src="./assets/hero-ornament.svg" alt="" aria-hidden="true">
     </section>
@@ -343,6 +339,10 @@
             <div id="songResults" class="song-results">
               <div class="empty-search">Empieza a escribir para buscar una canción.</div>
             </div>
+            <div id="spotifyPreview" class="spotify-preview" aria-live="polite" hidden>
+              <p id="spotifyPreviewStatus" class="spotify-preview-status" hidden></p>
+              <div id="spotifyPreviewMount"></div>
+            </div>
 
             <div class="selected-heading">
               <span>Canciones seleccionadas (<span id="selectedCount">0</span>)</span>
@@ -427,6 +427,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

@@ -29,77 +29,51 @@ const busDropoff = document.getElementById("busDropoff");
 const menuButton = document.getElementById("menuButton");
 const mobileNav = document.getElementById("mobileNav");
 const musicToggle = document.getElementById("musicToggle");
-const youtubeVideoUrl = "https://www.youtube.com/watch?v=QCZZwZQ4qNs";
-let musicPlayer = null;
-let musicPlayerReady = false;
-let youtubeApiFailed = false;
-let youtubePlayerFailed = false;
+const backgroundAudio = document.getElementById("backgroundAudio");
+const spotifyPreview = document.getElementById("spotifyPreview");
+const spotifyPreviewStatus = document.getElementById("spotifyPreviewStatus");
+const spotifyPreviewMount = document.getElementById("spotifyPreviewMount");
+let spotifyIframeApi = null;
+let spotifyEmbedController = null;
+let activeSpotifyTrackId = null;
+let spotifyEmbedPlaying = false;
+let pendingSpotifySong = null;
+let spotifyIframeApiFailed = false;
+let backgroundAudioPlaying = false;
 
 function updateMusicToggle(isPlaying) {
-  musicToggle.textContent = isPlaying ? "Quitar música" : "Activar música";
-  musicToggle.setAttribute("aria-label", isPlaying ? "Quitar música" : "Activar música");
+  backgroundAudioPlaying = isPlaying;
+  musicToggle.textContent = isPlaying ? "Desactivar música" : "Activar música";
+  musicToggle.setAttribute("aria-label", isPlaying ? "Desactivar música" : "Activar música");
   musicToggle.setAttribute("aria-pressed", String(isPlaying));
 }
 
-function stopAudio() {
-  if (musicPlayerReady) musicPlayer.stopVideo();
-  updateMusicToggle(false);
-}
+async function playBackgroundAudio() {
+  try {
+    await backgroundAudio.play();
+  } catch (error) {
+    updateMusicToggle(false);
+    if (error.name === "NotAllowedError") {
+      showToast("El navegador bloqueó la reproducción automática. Pulsa «Activar música» para escucharla.");
+      return;
+    }
 
-function initializeYoutubePlayer() {
-  window.onYouTubeIframeAPIReady = () => {
-    musicPlayer = new window.YT.Player("youtubeMusicPlayer", {
-      events: {
-        onReady: () => {
-          musicPlayerReady = true;
-        },
-        onStateChange: (event) => {
-          updateMusicToggle(event.data === window.YT.PlayerState.PLAYING);
-        },
-        onError: (event) => {
-          console.error("Error en el reproductor de YouTube:", event.data);
-          youtubePlayerFailed = true;
-          updateMusicToggle(false);
-          showToast(window.location.protocol === "file:"
-            ? "Abre la web desde http://localhost:3000 o desde su dirección publicada para reproducir YouTube."
-            : "No se ha podido cargar la canción desde YouTube.");
-        }
-      }
-    });
-  };
-
-  const youtubeApi = document.createElement("script");
-  youtubeApi.src = "https://www.youtube.com/iframe_api";
-  youtubeApi.async = true;
-  youtubeApi.onerror = () => {
-    youtubeApiFailed = true;
-    console.error("No se pudo cargar la API del reproductor de YouTube.");
-    showToast("No se ha podido conectar con YouTube. Puedes abrir la canción desde el reproductor.");
-  };
-  document.head.append(youtubeApi);
+    console.error("No se pudo reproducir el archivo de música:", error);
+    showToast("No se ha podido reproducir la canción.");
+  }
 }
 
 musicToggle.addEventListener("click", () => {
-  if (youtubePlayerFailed) {
-    window.open(youtubeVideoUrl, "_blank", "noopener,noreferrer");
-    return;
-  }
-
-  if (!musicPlayerReady) {
-    if (youtubeApiFailed) {
-      window.open(youtubeVideoUrl, "_blank", "noopener,noreferrer");
-    } else {
-      showToast("El reproductor de YouTube se está cargando. Inténtalo de nuevo en un momento.");
-    }
-    return;
-  }
-
-  if (musicPlayer.getPlayerState() === window.YT.PlayerState.PLAYING) {
-    stopAudio();
+  stopSongPreview();
+  if (backgroundAudioPlaying) {
+    backgroundAudio.pause();
   } else {
-    musicPlayer.playVideo();
+    void playBackgroundAudio();
   }
 });
+
+backgroundAudio.addEventListener("playing", () => updateMusicToggle(true));
+backgroundAudio.addEventListener("pause", () => updateMusicToggle(false));
 
 function showToast(message) {
   toast.textContent = message;
@@ -118,6 +92,8 @@ function escapeHtml(value) {
 }
 
 function renderResults(results) {
+  stopSongPreview();
+
   if (!results.length) {
     songResults.innerHTML = `<div class="empty-search">No hemos encontrado canciones.</div>`;
     return;
@@ -132,13 +108,15 @@ function renderResults(results) {
           <div class="song-title">${escapeHtml(song.title)}</div>
           <div class="song-artist">${escapeHtml(song.artist)}</div>
         </div>
-        <a
-          class="icon-button spotify-link"
-          href="${escapeHtml(song.spotifyUrl)}"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Abrir ${escapeHtml(song.title)} en Spotify"
-        >↗</a>
+        <button
+          type="button"
+          class="icon-button preview-button"
+          data-action="preview"
+          data-id="${escapeHtml(song.id)}"
+          title="Reproducir en esta página"
+          aria-label="Reproducir ${escapeHtml(song.title)} en esta página"
+          aria-pressed="false"
+        >▶</button>
         <button
           type="button"
           class="icon-button plus-button"
@@ -151,13 +129,129 @@ function renderResults(results) {
     `;
   }).join("");
 
-  songResults.querySelectorAll('[data-action="add"]').forEach((button) => {
+  songResults.querySelectorAll("[data-action]").forEach((button) => {
     const song = results.find((item) => String(item.id) === String(button.dataset.id));
     button._song = song;
   });
 }
 
+function updatePreviewButtons() {
+  songResults.querySelectorAll('[data-action="preview"]').forEach((button) => {
+    const song = button._song;
+    const isPlaying = song && String(song.id) === String(activeSpotifyTrackId) && spotifyEmbedPlaying;
+    button.textContent = isPlaying ? "Ⅱ" : "▶";
+    button.setAttribute("aria-label", isPlaying
+      ? `Pausar ${song.title} en esta página`
+      : `Reproducir ${song.title} en esta página`);
+    button.setAttribute("aria-pressed", String(isPlaying));
+    button.title = isPlaying ? "Pausar reproducción" : "Reproducir en esta página";
+  });
+}
+
+function stopSongPreview() {
+  pendingSpotifySong = null;
+  activeSpotifyTrackId = null;
+  spotifyEmbedPlaying = false;
+  spotifyPreview.hidden = true;
+  spotifyPreviewStatus.hidden = true;
+  if (spotifyEmbedController) spotifyEmbedController.pause();
+  updatePreviewButtons();
+}
+
+function createSpotifyEmbed(song) {
+  spotifyPreviewStatus.hidden = true;
+  spotifyIframeApi.createController(
+    spotifyPreviewMount,
+    { uri: `spotify:track:${song.id}`, width: "100%", height: "152" },
+    (controller) => {
+      spotifyEmbedController = controller;
+      controller.addListener("playback_started", (event) => {
+        const trackId = event.data.playingURI?.split(":").pop();
+        if (trackId) activeSpotifyTrackId = trackId;
+        spotifyEmbedPlaying = true;
+        updatePreviewButtons();
+      });
+      controller.addListener("playback_update", (event) => {
+        const trackId = event.data.playingURI?.split(":").pop();
+        if (trackId) activeSpotifyTrackId = trackId;
+        spotifyEmbedPlaying = !event.data.isPaused;
+        updatePreviewButtons();
+      });
+      controller.addListener("ready", () => {
+        if (String(activeSpotifyTrackId) === String(song.id)) controller.play();
+      });
+    }
+  );
+}
+
+function toggleSongPreview(song) {
+  spotifyPreview.hidden = false;
+  if (!backgroundAudio.paused) backgroundAudio.pause();
+
+  if (spotifyIframeApiFailed) {
+    spotifyPreviewStatus.textContent = "No se ha podido cargar el reproductor integrado de Spotify.";
+    spotifyPreviewStatus.hidden = false;
+    showToast("No se ha podido cargar el reproductor de Spotify. Inténtalo de nuevo más tarde.");
+    return;
+  }
+
+  if (spotifyEmbedController && String(song.id) === String(activeSpotifyTrackId)) {
+    spotifyEmbedController.togglePlay();
+    return;
+  }
+
+  activeSpotifyTrackId = String(song.id);
+  spotifyEmbedPlaying = false;
+  updatePreviewButtons();
+
+  if (!spotifyIframeApi) {
+    pendingSpotifySong = song;
+    spotifyPreviewStatus.textContent = "Cargando el reproductor de Spotify…";
+    spotifyPreviewStatus.hidden = false;
+    return;
+  }
+
+  try {
+    if (spotifyEmbedController) {
+      spotifyEmbedController.loadEntity(song.spotifyUrl);
+      spotifyEmbedController.play();
+    } else {
+      createSpotifyEmbed(song);
+    }
+  } catch (error) {
+    console.error("No se pudo iniciar el reproductor integrado de Spotify:", error);
+    spotifyPreviewStatus.textContent = "No se ha podido reproducir esta canción dentro de la página.";
+    spotifyPreviewStatus.hidden = false;
+    showToast("No se ha podido iniciar la reproducción en Spotify.");
+  }
+}
+
+window.onSpotifyIframeApiReady = (api) => {
+  spotifyIframeApi = api;
+  if (pendingSpotifySong) {
+    const song = pendingSpotifySong;
+    pendingSpotifySong = null;
+    createSpotifyEmbed(song);
+  }
+};
+
+const spotifyIframeApiScript = document.createElement("script");
+spotifyIframeApiScript.src = "https://open.spotify.com/embed/iframe-api/v1";
+spotifyIframeApiScript.async = true;
+spotifyIframeApiScript.onerror = () => {
+  spotifyIframeApiFailed = true;
+  console.error("No se pudo cargar la API del reproductor integrado de Spotify.");
+  if (pendingSpotifySong) {
+    pendingSpotifySong = null;
+    spotifyPreviewStatus.textContent = "No se ha podido cargar el reproductor integrado de Spotify.";
+    spotifyPreviewStatus.hidden = false;
+  }
+};
+document.head.append(spotifyIframeApiScript);
+
 async function searchSongs(term) {
+  stopSongPreview();
+
   if (term.trim().length < 2) {
     songResults.innerHTML = `<div class="empty-search">Empieza a escribir para buscar una canción.</div>`;
     clearSearch.style.display = term ? "block" : "none";
@@ -196,6 +290,7 @@ function addSong(song) {
 
   state.selectedSongs.push(song);
   renderSelectedSongs();
+  void playBackgroundAudio();
   // Actualiza los resultados visibles para marcar la canción como seleccionada.
   const term = songSearch.value.trim();
   if (term.length >= 2) searchSongs(term);
@@ -326,7 +421,9 @@ clearSearch.addEventListener("click", () => {
 
 songResults.addEventListener("click", (event) => {
   const button = event.target.closest("[data-action]");
-  if (button?.dataset.action === "add" && button._song) addSong(button._song);
+  if (!button?._song) return;
+  if (button.dataset.action === "add") addSong(button._song);
+  if (button.dataset.action === "preview") toggleSongPreview(button._song);
 });
 
 selectedSongsEl.addEventListener("click", (event) => {
@@ -560,4 +657,4 @@ updateAttendanceDetails();
 updatePreweddingDetails();
 updateBusDetails();
 renderSelectedSongs();
-initializeYoutubePlayer();
+void playBackgroundAudio();

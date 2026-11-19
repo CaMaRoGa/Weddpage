@@ -55,27 +55,33 @@ Para una boda real conviene sustituir este almacenamiento por una base de datos
 
 ## Música del inicio
 
-La canción se carga desde el reproductor oficial de YouTube, que permanece oculto.
-El botón de la esquina superior derecha permite iniciar o detener la música.
-Abre la web desde `http://localhost:3000` o desde el dominio publicado, no
-abriendo `public/index.html` directamente, porque YouTube necesita un origen web.
+La canción «Si Antes Te Hubiera Conocido» de KAROL G se reproduce desde el MP3
+local, sin mostrar un reproductor en la página. La web intenta iniciarla al
+cargarse y el botón de la esquina superior derecha permite detenerla o volver a
+activarla. Algunos navegadores bloquean la reproducción automática con sonido;
+en ese caso, pulsa «Activar música».
 
 ## Buscador musical de Spotify
 
 El backend consulta la Spotify Web API desde `/api/songs` y devuelve título,
-artista, álbum, carátula y enlace a Spotify. Las canciones se buscan en el
-catálogo de España y se pueden abrir en Spotify; la API no ofrece una
-previsualización reproducible para todos los resultados.
+artista, álbum, carátula y enlace a Spotify. El botón de play carga el
+reproductor oficial integrado dentro de la página; desde ahí se puede escuchar
+la canción sin abrir otra ventana y luego añadirla a la lista.
 
 El servidor usa el flujo Client Credentials. Crea una aplicación en
-[Spotify for Developers](https://developer.spotify.com/dashboard) y configura
-sus credenciales como variables de entorno. En PowerShell:
+[Spotify for Developers](https://developer.spotify.com/dashboard), copia
+[.env.example](./.env.example) como `.env` en la carpeta del proyecto y completa
+el Client ID y el Client Secret:
 
-```powershell
-$env:SPOTIFY_CLIENT_ID = "tu-client-id"
-$env:SPOTIFY_CLIENT_SECRET = "tu-client-secret"
-npm start
+```env
+SPOTIFY_CLIENT_ID=tu-client-id
+SPOTIFY_CLIENT_SECRET=tu-client-secret
 ```
+
+Después reinicia el servidor con `npm start`. El servidor carga `.env`
+automáticamente. Si la página sigue mostrando un error, revisa la terminal del
+servidor: puede indicar credenciales incorrectas o un problema de conexión con
+Spotify.
 
 En producción, añade esas variables a la configuración segura del servicio.
 No pongas el secreto en `public/`, en el navegador ni en el repositorio. Si

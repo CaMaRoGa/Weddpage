@@ -1,10 +1,12 @@
 import express from "express";
+import dotenv from "dotenv";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +14,10 @@ const DATA_DIR = path.join(__dirname, "data");
 const RSVP_FILE = path.join(DATA_DIR, "rsvps.json");
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+
+if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
+  console.warn("Spotify no está configurado. Copia .env.example a .env, añade las credenciales y reinicia el servidor.");
+}
 
 app.use(express.json({ limit: "100kb" }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -85,7 +91,7 @@ app.get("/api/songs", async (req, res) => {
 
   if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
     return res.status(503).json({
-      error: "El buscador de Spotify aún no está configurado en el servidor."
+      error: "Faltan las credenciales de Spotify. Configúralas en el archivo .env y reinicia el servidor."
     });
   }
 

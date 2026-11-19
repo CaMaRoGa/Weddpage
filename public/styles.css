@@ -231,23 +231,6 @@ body::before {
   font: italic 28px/1.2 var(--serif);
 }
 
-.music-player {
-  position: fixed;
-  top: 0;
-  left: -220px;
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.music-player iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
 .hero-ornament {
   display: block;
   width: min(620px, 92%);
@@ -578,7 +561,7 @@ textarea:focus,
 .song-row {
   min-height: 52px;
   display: grid;
-  grid-template-columns: 38px 1fr 28px 28px;
+  grid-template-columns: 38px minmax(0, 1fr) 28px 28px;
   align-items: center;
   gap: 8px;
   padding: 5px 8px;
@@ -624,9 +607,9 @@ textarea:focus,
 
 .icon-button:hover { background: var(--vine-soft); }
 
-.spotify-link {
-  color: var(--ink);
-  text-decoration: none;
+.preview-button {
+  color: var(--vine-deep);
+  font-size: 12px;
 }
 
 .plus-button {
@@ -639,6 +622,27 @@ textarea:focus,
   color: #f0dfe1;
   font-size: 14px;
   padding: 13px 10px;
+}
+
+.spotify-preview {
+  padding: 8px;
+  border: 1px solid #e0dfdb;
+  border-top: 0;
+  background: var(--paper-2);
+}
+
+.spotify-preview iframe {
+  display: block;
+  width: 100%;
+  min-height: 152px;
+  border: 0;
+  border-radius: 8px;
+}
+
+.spotify-preview-status {
+  margin: 0;
+  color: var(--muted);
+  font: 12px/1.5 var(--sans);
 }
 
 .selected-heading {
