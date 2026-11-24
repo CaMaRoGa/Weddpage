@@ -231,13 +231,6 @@ body::before {
   font: italic 28px/1.2 var(--serif);
 }
 
-.hero-ornament {
-  display: block;
-  width: min(620px, 92%);
-  height: auto;
-  margin: 22px auto 0;
-}
-
 .content-section {
   width: 100%;
   margin: 0 auto;
@@ -1707,11 +1700,6 @@ textarea:focus,
     right: 10px;
     padding: 10px 12px;
     font-size: 9px;
-  }
-
-  .hero-ornament {
-    width: min(520px, 96%);
-    margin-top: 18px;
   }
 
   .content-section {
